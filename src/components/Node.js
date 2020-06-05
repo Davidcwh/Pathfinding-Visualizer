@@ -1,7 +1,9 @@
 import '../css/Node.css';
-import React from './node_modules/react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { toggleWallNode } from '../actions'
 
-const Node = ({ row, col, isStart, isFinish, isWall, onMouseDown, onMouseUp, onMouseEnter}) => {
+const Node = ({ row, col, isStart, isFinish, isWall, onClick}) => {
     const nodeType = isFinish
         ? 'node-finish'
         : isStart
@@ -13,9 +15,24 @@ const Node = ({ row, col, isStart, isFinish, isWall, onMouseDown, onMouseUp, onM
     return <div 
             id={`node-${row}-${col}`}
             className={`node ${nodeType}`}
-            onMouseDown={() => onMouseDown(row, col)}
-            onMouseUp={() => onMouseUp()}
-            onMouseEnter={() => onMouseEnter(row, col)}></div>
+            onClick={onClick}></div>
 }
 
-export default Node;
+const mapStateToProps = (state, ownProps) => {
+    const node = state.grid[ownProps.row][ownProps.col];
+
+    return {
+        isStart:  node.isStart,
+        isFinish: node.isFinish,
+        isWall: node.isWall
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+
+    return {
+        onClick: () => dispatch(toggleWallNode(ownProps.row, ownProps.col))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Node);

@@ -1,4 +1,4 @@
-import { combinedReducer } from 'react-redux';
+import { combineReducers } from 'redux';
 import { generateInitalGrid, generateToggleWallGrid } from '../util/GridGenerationUtil'
 
 const gridReducer = (state=generateInitalGrid(), action) => {
@@ -11,6 +11,6 @@ const gridReducer = (state=generateInitalGrid(), action) => {
     }
 }
 
-export default combinedReducer({
+export default combineReducers({
     grid: gridReducer
 });
