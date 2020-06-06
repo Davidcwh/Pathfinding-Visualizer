@@ -1,9 +1,6 @@
-const TOTAL_ROW = 20;
-const TOTAL_COL = 50;
-const START_NODE_ROW = 10;
-const START_NODE_COL = 5;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 45; 
+import { gridDetails } from '../constants';
+
+const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
 
 function NodeFactory(row, col) {
     return {
