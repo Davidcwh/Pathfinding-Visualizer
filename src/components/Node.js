@@ -3,14 +3,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { mouseIsNotPressed, onMouseDown } from '../actions'
 
-const Node = ({ row, col, isStart, isFinish, isWall,isMousePressed,  onMouseDown, mouseIsNotPressed}) => {
+const Node = ({ row, col, isStart, isFinish, isWall, isVisited, isFrontier, isMousePressed, onMouseDown, mouseIsNotPressed}) => {
     const nodeType = isFinish
         ? 'node-finish'
         : isStart
         ? 'node-start'
         : isWall
         ? 'node-wall'
-        : '';
+        : isVisited
+        ? 'node-visited'
+        : isFrontier
+        ? 'node-frontier'
+        : ''
 
     return <div 
             id={`node-${row}-${col}`}
@@ -27,6 +31,8 @@ const mapStateToProps = (state, ownProps) => {
         isStart:  node.isStart,
         isFinish: node.isFinish,
         isWall: node.isWall,
+        isFrontier: node.isFrontier,
+        isVisited: node.isVisited,
         isMousePressed: state.isMousePressed
     }
 }

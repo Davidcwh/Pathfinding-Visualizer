@@ -1,10 +1,19 @@
 import { combineReducers } from 'redux';
-import { generateInitalGrid, generateToggleWallGrid } from '../util/GridGenerationUtil'
+import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid } from '../util/GridGenerationUtil'
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
         case 'TOOGLE_WALL_NODE':
             return generateToggleWallGrid(action.payload.row, action.payload.col, state);
+
+        case 'TOGGLE_FRONTIER_NDOE':
+            return generateToggleFrontierGrid(action.payload.row, action.payload.col, state);
+
+        case 'TOGGLE_VISITED_NODE':
+            return generateMarkVisitedGrid(action.payload.row, action.payload.col, state);
+
+        case 'CLEAR_BOARD':
+            return generateInitalGrid();
 
         default:
             return state;
@@ -24,7 +33,17 @@ const mousePressedReducer = (state=false, action) => {
     }
 }
 
+const selectAlgorithmReducer = (state='BFS', action) => {
+    switch(action.type) {
+
+
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
+    selectedAlgorithm: selectAlgorithmReducer,
     grid: gridReducer,
     isMousePressed: mousePressedReducer
 });

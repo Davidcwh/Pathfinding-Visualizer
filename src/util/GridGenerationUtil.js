@@ -11,6 +11,7 @@ function NodeFactory(row, col) {
         distance: Infinity,
         isVisited: false,
         isWall: false,
+        isFrontier: false,
         previousNode: null,
       };
 }
@@ -38,6 +39,33 @@ export function generateToggleWallGrid(row, col, currentGrid) {
     const newNode = {
         ...node,
         isWall: !node.isWall
+    };
+    newGrid[row][col] = newNode;
+            
+    return newGrid;
+}
+
+export function generateToggleFrontierGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+    const node = newGrid[row][col];
+
+    const newNode = {
+        ...node,
+        isFrontier: !node.isFrontier
+    };
+    newGrid[row][col] = newNode;
+            
+    return newGrid;
+}
+
+export function generateMarkVisitedGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+    const node = newGrid[row][col];
+
+    const newNode = {
+        ...node,
+        isVisited: true,
+        isFrontier: false
     };
     newGrid[row][col] = newNode;
             
