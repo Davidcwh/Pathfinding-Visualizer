@@ -11,6 +11,20 @@ const gridReducer = (state=generateInitalGrid(), action) => {
     }
 }
 
+const mousePressedReducer = (state=false, action) => {
+    switch(action.type) {
+        case 'PRESSED':
+            return true;
+
+        case 'NOT_PRESSED':
+            return false;
+
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    grid: gridReducer
+    grid: gridReducer,
+    isMousePressed: mousePressedReducer
 });

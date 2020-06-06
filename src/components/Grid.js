@@ -3,18 +3,15 @@ import Node from './Node';
 import { connect } from 'react-redux';
 import '../css/Grid.css';
 import { generateNodeKey } from '../util/GridGenerationUtil'
+import { mouseIsPressed, mouseIsNotPressed } from '../actions';
 
 class Grid extends React.Component {
 
     render() {
-        if(this.props === undefined) {
-            return <div>hello</div>;
-        }
-
-        const grid = this.props.grid;
+        const {grid, mouseIsPressed, mouseIsNotPressed} = this.props;
 
         return (
-            <div className="grid">
+            <div onMouseDown={mouseIsPressed} onMouseUp={mouseIsNotPressed} className="grid">
                 {
                     grid.map((row, rowIndex) => {
                         return (
@@ -38,8 +35,16 @@ class Grid extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        grid: state.grid
+        grid: state.grid,
+        isMousePressed: state.isMousePressed
     }
 }
 
-export default connect(mapStateToProps)(Grid);
+const mapDispatchToProps = dispatch => {
+    return {
+        mouseIsPressed: () => dispatch(mouseIsPressed()),
+        mouseIsNotPressed: () => dispatch(mouseIsNotPressed())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Grid);

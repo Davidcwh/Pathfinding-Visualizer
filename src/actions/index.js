@@ -6,3 +6,11 @@ export const toggleWallNode = (row, col) => {
         }
     }
 }
+
+export const mouseIsPressed = () => {
+    return { type: 'PRESSED'};
+}
+
+export const mouseIsNotPressed = () => {
+    return { type: 'NOT_PRESSED'};
+}
