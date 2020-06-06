@@ -28,3 +28,7 @@
 .node-frontier {
   background-color: orange;
 }
+
+.node-path {
+  background-color: palevioletred;
+}

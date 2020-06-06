@@ -41,3 +41,12 @@ export const toggleVisitedNode = (row, col) => {
         }
     }
 }
+
+export const togglePathNode = (row, col) => {
+    return {
+        type: 'TOGGLE_PATH_NODE',
+        payload: {
+            row, col
+        }
+    }
+}

@@ -13,6 +13,7 @@ function NodeFactory(row, col) {
         isWall: false,
         isFrontier: false,
         previousNode: null,
+        isPath: false
       };
 }
 
@@ -66,6 +67,19 @@ export function generateMarkVisitedGrid(row, col, currentGrid) {
         ...node,
         isVisited: true,
         isFrontier: false
+    };
+    newGrid[row][col] = newNode;
+            
+    return newGrid;
+}
+
+export function generateMarkPathGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+    const node = newGrid[row][col];
+
+    const newNode = {
+        ...node,
+        isPath: true
     };
     newGrid[row][col] = newNode;
             

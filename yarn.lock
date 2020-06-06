@@ -1096,6 +1096,55 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-10.1.0.tgz#f0950bba18819512d42f7197e56c518aa491cf18"
   integrity sha512-ij4wRiunFfaJxjB0BdrYHIH8FxBJpOwNPhhAcunlmPdXudL1WQV1qoP9un6JsEBAgQH+7UXyyjh0g7jTxXK6tg==
 
+"@datastructures-js/binary-search-tree@^3.1.6":
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/binary-search-tree/-/binary-search-tree-3.1.6.tgz#f1ceab8bddd763b6fbad7265627fa4b1a41b184c"
+  integrity sha512-YxO6FdXR3Lw5FMUy3ZZbCsMTBED52Pbbo2xS3BCg8+98Wg1kYqq71ukNo3An6DqPlyD/n6FtWNmXRDkL3YNQ8w==
+
+"@datastructures-js/graph@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/graph/-/graph-4.0.1.tgz#c774985c145e6925f4afdd6e87d0459ccca9ff05"
+  integrity sha512-LZDHvdHMt3kCT1bMYOkHF0x271jUFTKIKV9yGLTBzuYxwvJEyCsItCS+XTjxsPXb/dfuXS2+4pI7UQftKDK+Jg==
+  dependencies:
+    "@datastructures-js/queue" "^3.1.3"
+
+"@datastructures-js/heap@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/heap/-/heap-2.0.0.tgz#581f7fe57a41e089e4f3ebbbee1c9fc6a1b54d39"
+  integrity sha512-LIbt3dAK7v7VPoDQ/hNO3KSlUdPLkO74m1A/c+guKhoBiY1192F2Nt0moHU0wyWw/sUV9zAnw1GPyGsS7401ZQ==
+
+"@datastructures-js/linked-list@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/linked-list/-/linked-list-2.0.3.tgz#aa6d7d3460322bdcf4d624b41ba2cf1cfcf455dd"
+  integrity sha512-0+j76V593ZEKrsKEnuDsfWfmW5nxnLOKodrcccFMMqrs7tH9C/opXUjIQrpD7ATnPnvgV0jUEbJ1Siyp2gvD/Q==
+
+"@datastructures-js/priority-queue@^4.1.0":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/priority-queue/-/priority-queue-4.1.1.tgz#e8c9691bb9394c2e9fc58e360ead2f9a9300f9de"
+  integrity sha512-2i9+/23VjcJRZrPRoQtuQwL8lMy/FVoRTMurZAV+1x0lZxCJjUUo8m83SC0ndCycFmiNjxdWVns/vsHWtj4bpQ==
+  dependencies:
+    "@datastructures-js/heap" "^2.0.0"
+
+"@datastructures-js/queue@^3.1.3":
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/queue/-/queue-3.1.3.tgz#77262982ffa565f7b3087b1e8ab69b77060a73fb"
+  integrity sha512-jQYsbOvPZwy5FlL3HHKaCa+4H1BRHWndM7An1gcM+nfQaExtqtASQgwHx0RCv698ekHdN0viHLAqaU4Db28uuA==
+
+"@datastructures-js/set@^2.2.1":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/set/-/set-2.3.0.tgz#59dce80fc62c9318d6c24ec4fed8e69d465c191d"
+  integrity sha512-a3h39wGZkrTiPZeeWiBkwDCiR8Ix6xfJIK7wojdCTB35QXmXFws3S8B+kUEk3+ifP8cTFQaKBZzQyaIdyQs8Cw==
+
+"@datastructures-js/stack@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/stack/-/stack-2.0.3.tgz#7e4b17269ec401b20177d6dc570501ef9e6e2b2b"
+  integrity sha512-pLO5lzSNmAFZj0PpmWBCpB1lXf7vk5KXzwsHhlS45gUD4Vh9/ZE0Uw1GjpTinKKIljQ5Z/7TIunVZP/BbcgXUw==
+
+"@datastructures-js/trie@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@datastructures-js/trie/-/trie-3.0.1.tgz#192f091113b20b1e6b19b2706d568fa4e7cb0018"
+  integrity sha512-fPCkL6WNeJffBoGmrwUHcnRPgYxDakZHpr83nAfKzDjcTYBMWHE5/ISZUW74s9WGE0Ho2TQ8X0LCmVy6BzhgNA==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -3504,6 +3553,21 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
+
+datastructures-js@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/datastructures-js/-/datastructures-js-8.1.0.tgz#e4fe7b3342dcea8d56e1431497e818088c2a8870"
+  integrity sha512-onSKgCsI+nYRszktFOnEXKdfmQXSpEb3UWSk2YSogZ7kNgufc2m+fMTU+1lABdJddemIa6cUgocQ1hV92BU7fg==
+  dependencies:
+    "@datastructures-js/binary-search-tree" "^3.1.6"
+    "@datastructures-js/graph" "^4.0.1"
+    "@datastructures-js/heap" "^2.0.0"
+    "@datastructures-js/linked-list" "^2.0.3"
+    "@datastructures-js/priority-queue" "^4.1.0"
+    "@datastructures-js/queue" "^3.1.3"
+    "@datastructures-js/set" "^2.2.1"
+    "@datastructures-js/stack" "^2.0.3"
+    "@datastructures-js/trie" "^3.0.1"
 
 dbly-linked-list@0.3.4:
   version "0.3.4"

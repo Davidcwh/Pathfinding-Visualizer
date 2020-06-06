@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { clearBoard, toggleFrontierNode, toggleVisitedNode } from '../actions';
+import { clearBoard, toggleFrontierNode, toggleVisitedNode, togglePathNode } from '../actions';
 import BFS from '../util/algorithms/BFS';
 
 class Menu extends React.Component {
@@ -13,7 +13,7 @@ class Menu extends React.Component {
     runSelectedAlgorithm() {
         switch(this.props.selectedAlgorithm) {
             case "BFS":
-                const bfs = new BFS(this.props.grid, this.props.toggleVisitedNode, this.props.toggleFrontierNode);
+                const bfs = new BFS(this.props.grid, this.props.toggleVisitedNode, this.props.toggleFrontierNode, this.props.togglePathNode);
                 bfs.run();
                 break;
 
@@ -46,7 +46,8 @@ const mapDispatchToProps = dispatch => {
     return {
         clearBoard: () => dispatch(clearBoard()),
         toggleVisitedNode: (row, col) => dispatch(toggleVisitedNode(row, col)),
-        toggleFrontierNode: (row, col) => dispatch(toggleFrontierNode(row, col))
+        toggleFrontierNode: (row, col) => dispatch(toggleFrontierNode(row, col)),
+        togglePathNode: (row, col) => dispatch(togglePathNode(row, col))
     }
 }
 

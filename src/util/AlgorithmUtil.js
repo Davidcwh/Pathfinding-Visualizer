@@ -11,25 +11,21 @@ export const getNodeNeighbours = (state, node) => {
     if(node.row > 0) {
         const upNode = state[node.row - 1][node.col];
         neighbours.push(upNode);
-        console.log(`current node: ${upNode.row}, ${upNode.col}`);
     }
 
     if(node.col < (TOTAL_COL - 1)) {
         const rightNode = state[node.row][node.col + 1];
         neighbours.push(rightNode);
-        console.log(`current node: ${rightNode.row}, ${rightNode.col}`);
     }
 
     if(node.row < (TOTAL_ROW - 1)) {
         const downNode = state[node.row + 1][node.col];
         neighbours.push(downNode);
-        console.log(`current node: ${downNode.row}, ${downNode.col}`);
     }
 
     if(node.col > 0) {
         const leftNode = state[node.row][node.col - 1];
         neighbours.push(leftNode);
-        console.log(`current node: ${leftNode.row}, ${leftNode.col}`);
     }
 
     return neighbours;
