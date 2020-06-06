@@ -46,3 +46,7 @@ export function generateToggleWallGrid(row, col, currentGrid) {
             
     return newGrid;
 }
+
+export function generateNodeKey(row, col) {
+    return (row * TOTAL_ROW + col).toString();
+}
