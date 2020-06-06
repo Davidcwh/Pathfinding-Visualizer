@@ -1,9 +1,9 @@
 import '../css/Node.css';
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleWallNode } from '../actions'
+import { mouseIsNotPressed, onMouseDown } from '../actions'
 
-const Node = ({ row, col, isStart, isFinish, isWall, onClick}) => {
+const Node = ({ row, col, isStart, isFinish, isWall,isMousePressed,  onMouseDown, mouseIsNotPressed}) => {
     const nodeType = isFinish
         ? 'node-finish'
         : isStart
@@ -15,7 +15,9 @@ const Node = ({ row, col, isStart, isFinish, isWall, onClick}) => {
     return <div 
             id={`node-${row}-${col}`}
             className={`node ${nodeType}`}
-            onClick={onClick}></div>
+            onMouseDown={onMouseDown}
+            onMouseUp={mouseIsNotPressed}
+            onMouseEnter={(isMousePressed && !isWall) ? onMouseDown : () => {}}></div>
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -24,14 +26,15 @@ const mapStateToProps = (state, ownProps) => {
     return {
         isStart:  node.isStart,
         isFinish: node.isFinish,
-        isWall: node.isWall
+        isWall: node.isWall,
+        isMousePressed: state.isMousePressed
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-
     return {
-        onClick: () => dispatch(toggleWallNode(ownProps.row, ownProps.col))
+        onMouseDown: () => onMouseDown(ownProps.row, ownProps.col, dispatch),
+        mouseIsNotPressed: () => dispatch(mouseIsNotPressed()),
     }
 }
 
