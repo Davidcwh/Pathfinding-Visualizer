@@ -1,3 +1,13 @@
 .grid {
+    display: flex;
+    flex-direction: column;
+    outline: none;
+    height: 100vh;
     margin: 100px 0 0;
+}
+
+.grid-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

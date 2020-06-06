@@ -13,30 +13,22 @@ class Grid extends React.Component {
         const grid = this.props.grid;
 
         return (
-            <>
             <div className="grid">
                 {
                     grid.map((row, rowIndex) => {
                         return (
-                            <div className={rowIndex}>
+                            <div className="grid-row" key={rowIndex}>
                                 {
-                                    row.map((node, nodeIndex) => {
-                                        const {row, col } = node;
-                                        return (
-                                            <Node
-                                                key={nodeIndex}
-                                                row={rowIndex}
-                                                col={nodeIndex}
-                                                ></Node>
-                                        );
+                                    row.map((col, colIndex) => {
+                                        return (<Node row={rowIndex} col={colIndex} />);
                                     })
                                 }
                             </div>
                         )
+                        
                     })
                 }
             </div>
-            </>
         );
     }
 
