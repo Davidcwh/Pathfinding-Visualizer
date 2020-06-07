@@ -21,7 +21,7 @@ const Node = ({ row, col, isStart, isFinish, isWall, isVisited, isFrontier, isPa
     return <div 
             id={`node-${row}-${col}`}
             className={`node ${nodeType}`}
-            onMouseDown={(!isFrontier && !isVisited) ? onMouseDown : () => {}}
+            onMouseDown={(!isFrontier && !isVisited && !isFinish && !isStart) ? onMouseDown : () => {}}
             onMouseUp={mouseIsNotPressed}
             onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited) ? onMouseDown : () => {}}></div>
 }
