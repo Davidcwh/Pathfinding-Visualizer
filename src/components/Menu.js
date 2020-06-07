@@ -26,9 +26,11 @@ class Menu extends React.Component {
     render() {
         const { clearBoard, selectedAlgorithm } = this.props;
 
+        const runButtonClass = selectedAlgorithm === 'none' ? "active item" : "item" 
+
         return (
             <div className="ui three item menu">
-                <a onClick={this.runSelectedAlgorithm} className="item">Run!</a>
+                <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>Run!</a>
                 <SelectAlgorithmDropdown />
                 <a onClick={clearBoard} className="item">Clear Board</a>
             </div>
