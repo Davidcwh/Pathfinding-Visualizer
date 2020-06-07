@@ -33,6 +33,12 @@ export default class BFS {
             for(let i = 0; i < neighbours.length; i++) {
                 const neighbour = neighbours[i];
                 if(!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) {
+
+                    if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
+                        await this.showPath();
+                        return;
+                    }
+
                     neighbour.isFrontier = true;
                     neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
                     this.toggleFrontierNode(neighbour.row, neighbour.col);
