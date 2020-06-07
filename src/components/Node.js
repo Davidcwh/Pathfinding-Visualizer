@@ -21,9 +21,9 @@ const Node = ({ row, col, isStart, isFinish, isWall, isVisited, isFrontier, isPa
     return <div 
             id={`node-${row}-${col}`}
             className={`node ${nodeType}`}
-            onMouseDown={onMouseDown}
+            onMouseDown={(!isFrontier && !isVisited) ? onMouseDown : () => {}}
             onMouseUp={mouseIsNotPressed}
-            onMouseEnter={(isMousePressed && !isWall) ? onMouseDown : () => {}}></div>
+            onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited) ? onMouseDown : () => {}}></div>
 }
 
 const mapStateToProps = (state, ownProps) => {
