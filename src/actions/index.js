@@ -50,3 +50,9 @@ export const togglePathNode = (row, col) => {
         }
     }
 }
+
+export const setSelectedAlgorithm = (algorithmName) => {
+    return {
+        type: algorithmName
+    }
+}

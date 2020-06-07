@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { clearBoard, toggleFrontierNode, toggleVisitedNode, togglePathNode } from '../actions';
 import BFS from '../util/algorithms/BFS';
+import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 
 class Menu extends React.Component {
     constructor(props) {
@@ -23,12 +24,12 @@ class Menu extends React.Component {
     }
 
     render() {
-        const { clearBoard } = this.props;
+        const { clearBoard, selectedAlgorithm } = this.props;
 
         return (
             <div className="ui three item menu">
                 <a onClick={this.runSelectedAlgorithm} className="item">Run!</a>
-                <a className="item">Select Search Algorithm</a>
+                <SelectAlgorithmDropdown />
                 <a onClick={clearBoard} className="item">Clear Board</a>
             </div>
         );

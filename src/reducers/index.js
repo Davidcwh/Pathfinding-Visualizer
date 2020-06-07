@@ -36,9 +36,10 @@ const mousePressedReducer = (state=false, action) => {
     }
 }
 
-const selectAlgorithmReducer = (state='BFS', action) => {
+const selectAlgorithmReducer = (state='none', action) => {
     switch(action.type) {
-
+        case 'BFS':
+            return 'BFS';
 
         default:
             return state;
