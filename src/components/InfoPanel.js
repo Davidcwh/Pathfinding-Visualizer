@@ -1,18 +1,19 @@
 import React from 'react';
-import '../css/Node.css';
 
 const LegendItem = ({nodeType}) => {
     return (
-        <div >
-            <div className={`node node-${nodeType}`}></div>
-            <div>{nodeType} node</div>
+        <div className="column" style={{margin: "0 5vh 5vh 3vh"}}>
+            <div className={`node node-${nodeType}`} style={{border: "2px solid white", borderRadius: "5px"}}></div>
+            <div>{nodeType}</div>
         </div>
     )
 }
 
 const InfoPanel = () => {
     return (
-        <div className="container">
+        <div className="ui center aligned grid">
+            <div className="row "style={{margin: "2vh 0 0 0"}}><h2 class="ui dividing header">Legend</h2></div>
+            <LegendItem nodeType={'unvisited'} />
             <LegendItem nodeType={'start'} />
             <LegendItem nodeType={'finish'} />
             <LegendItem nodeType={'wall'} />
