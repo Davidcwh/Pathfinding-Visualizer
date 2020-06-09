@@ -12,7 +12,7 @@ const LegendItem = ({nodeType}) => {
 const InfoPanel = () => {
     return (
         <div className="ui center aligned grid">
-            <div className="row "style={{margin: "2vh 0 0 0"}}><h2 class="ui dividing header">Legend</h2></div>
+            <div className="row "style={{margin: "2vh 0 0 0"}}><h2 className="ui dividing header">Legend</h2></div>
             <LegendItem nodeType={'unvisited'} />
             <LegendItem nodeType={'start'} />
             <LegendItem nodeType={'finish'} />

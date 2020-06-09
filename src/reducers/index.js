@@ -15,7 +15,7 @@ const gridReducer = (state=generateInitalGrid(), action) => {
         case 'TOGGLE_PATH_NODE':
             return generateMarkPathGrid(action.payload.row, action.payload.col, state);
 
-        case 'CLEAR_BOARD':
+        case 'SHOW_INITIAL_BOARD':
             return generateInitalGrid();
 
         default:
@@ -46,7 +46,21 @@ const selectAlgorithmReducer = (state='none', action) => {
     }
 }
 
+const runAlgorithmReducer = (state=false, action) => {
+    switch(action.type) {
+        case 'RUN_ALGORITHM':
+            return true;
+
+        case 'STOP_ALGORITHM':
+            return false;
+
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
+    isAlgorithmRunning: runAlgorithmReducer,
     selectedAlgorithm: selectAlgorithmReducer,
     grid: gridReducer,
     isMousePressed: mousePressedReducer

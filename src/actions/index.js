@@ -20,8 +20,22 @@ export const onMouseDown = (row, col, dispatch) => {
     dispatch(mouseIsPressed());
 }
 
-export const clearBoard = () => {
-    return { type: 'CLEAR_BOARD'};
+
+export const runAlgorithm = () => {
+    return { type: 'RUN_ALGORITHM'};
+}
+
+export const stopAlgorithm = () => {
+    return { type: 'STOP_ALGORITHM'};
+}
+
+const showInitialBoard = () => {
+    return { type: 'SHOW_INITIAL_BOARD'};
+}
+
+export const clearBoard = (dispatch) => {
+    dispatch(stopAlgorithm());
+    dispatch(showInitialBoard());
 }
 
 export const toggleFrontierNode = (row, col) => {
