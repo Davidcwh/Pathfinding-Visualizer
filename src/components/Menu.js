@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { clearBoard, toggleFrontierNode, toggleVisitedNode, togglePathNode } from '../actions';
+import { clearBoard, runAlgorithm, stopAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode } from '../actions';
 import BFS from '../util/algorithms/BFS';
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 
@@ -11,16 +11,26 @@ class Menu extends React.Component {
         this.runSelectedAlgorithm = this.runSelectedAlgorithm.bind(this);
     }
 
-    runSelectedAlgorithm() {
-        switch(this.props.selectedAlgorithm) {
+    async runSelectedAlgorithm() {
+        const { isAlgorithmRunning, selectedAlgorithm, runAlgorithm, stopAlgorithm, grid, toggleVisitedNode, toggleFrontierNode, togglePathNode } = this.props;
+
+        if(selectedAlgorithm === 'none' || isAlgorithmRunning) {
+            return;
+        }
+
+        runAlgorithm();
+
+        switch(selectedAlgorithm) {
             case "BFS":
-                const bfs = new BFS(this.props.grid, this.props.toggleVisitedNode, this.props.toggleFrontierNode, this.props.togglePathNode);
-                bfs.run();
+                const bfs = new BFS(grid, toggleVisitedNode, toggleFrontierNode, togglePathNode);
+                await bfs.run();
                 break;
 
             default:
-                return;
+                break;
         }
+
+        stopAlgorithm();
     }
 
     render() {
@@ -41,13 +51,16 @@ class Menu extends React.Component {
 const mapStateToProps = state => {
     return {
         grid: state.grid,
-        selectedAlgorithm: state.selectedAlgorithm
+        selectedAlgorithm: state.selectedAlgorithm,
+        isAlgorithmRunning: state.isAlgorithmRunning
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        clearBoard: () => dispatch(clearBoard()),
+        clearBoard: () => clearBoard(dispatch),
+        runAlgorithm: () => dispatch(runAlgorithm()),
+        stopAlgorithm: () => dispatch(stopAlgorithm()),
         toggleVisitedNode: (row, col) => dispatch(toggleVisitedNode(row, col)),
         toggleFrontierNode: (row, col) => dispatch(toggleFrontierNode(row, col)),
         togglePathNode: (row, col) => dispatch(togglePathNode(row, col))

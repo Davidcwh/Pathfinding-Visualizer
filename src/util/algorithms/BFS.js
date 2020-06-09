@@ -1,5 +1,6 @@
 import { gridDetails } from '../../constants';
-import { getNodeNeighbours, sleep } from '../AlgorithmUtil'
+import { getNodeNeighbours, sleep } from '../AlgorithmUtil';
+import { store } from '../../index';
 import Queue from 'queue-fifo';
 import Stack from '@datastructures-js/stack';
 
@@ -13,12 +14,17 @@ export default class BFS {
         this.togglePathNode = togglePathNode;
     }
 
+    isAlgorithmRunning = () => {
+        console.log(store.getState().isAlgorithmRunning)
+        return store.getState().isAlgorithmRunning;
+    }
+
     async run() {
         const queue = new Queue();
         const startNode = this.state[START_NODE_ROW][START_NODE_COL];
         queue.enqueue(startNode);
 
-        while(!queue.isEmpty()) {
+        while(!queue.isEmpty() && this.isAlgorithmRunning()) {
             const currentNode = queue.dequeue();
             currentNode.isFrontier = false;
             currentNode.isVisited = true;

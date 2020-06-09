@@ -1,5 +1,5 @@
 export const gridDetails = {
-    TOTAL_ROW: 20,
+    TOTAL_ROW: 21,
     TOTAL_COL: 50,
     START_NODE_ROW: 10,
     START_NODE_COL: 5,
