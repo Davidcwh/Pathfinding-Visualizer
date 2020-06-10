@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { clearBoard, runAlgorithm, stopAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode } from '../actions';
+import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure } from '../actions';
 import BFS from '../util/algorithms/BFS';
+import { isAlgorithmRunning } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 
 class Menu extends React.Component {
@@ -9,12 +10,28 @@ class Menu extends React.Component {
         super(props);
 
         this.runSelectedAlgorithm = this.runSelectedAlgorithm.bind(this);
+        this.clearBoard = this.clearBoard.bind(this);
+
     }
 
     async runSelectedAlgorithm() {
-        const { isAlgorithmRunning, selectedAlgorithm, runAlgorithm, stopAlgorithm, grid, toggleVisitedNode, toggleFrontierNode, togglePathNode } = this.props;
+        const { selectedAlgorithm, 
+                runAlgorithm, 
+                stopAlgorithm, 
+                pauseAlgorithm, 
+                grid,
+                dataStructure,
+                toggleVisitedNode, 
+                toggleFrontierNode, 
+                togglePathNode,
+                setDataStructure } = this.props;
 
-        if(selectedAlgorithm === 'none' || isAlgorithmRunning) {
+        if(selectedAlgorithm === 'none') {
+            return;
+        }
+
+        if(isAlgorithmRunning()) {
+            pauseAlgorithm();
             return;
         }
 
@@ -22,27 +39,38 @@ class Menu extends React.Component {
 
         switch(selectedAlgorithm) {
             case "BFS":
-                const bfs = new BFS(grid, toggleVisitedNode, toggleFrontierNode, togglePathNode);
-                await bfs.run();
+                const bfs = new BFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                await bfs.run(grid, dataStructure);
                 break;
 
             default:
                 break;
         }
+        
+        if(isAlgorithmRunning()) {
+            stopAlgorithm();
+        }
 
-        stopAlgorithm();
+    }
+
+    clearBoard() {
+        this.props.stopAlgorithm();
+        this.props.resetDataStructure();
+        this.props.showInitialBoard();
     }
 
     render() {
-        const { clearBoard, selectedAlgorithm } = this.props;
+        const { selectedAlgorithm, algorithmStatus } = this.props;
 
-        const runButtonClass = selectedAlgorithm === 'none' ? "active item" : "item" 
+        const runButtonClass = selectedAlgorithm === 'none' ? "active item" : "item";
+
+        const runButtonText = (algorithmStatus === 'RUNNING') ? "Pause" : "Run";
 
         return (
             <div className="ui three item menu">
-                <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>Run!</a>
+                <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
                 <SelectAlgorithmDropdown />
-                <a onClick={clearBoard} className="item">Clear Board</a>
+                <a onClick={this.clearBoard} className="item">Clear Board</a>
             </div>
         );
     }
@@ -51,19 +79,23 @@ class Menu extends React.Component {
 const mapStateToProps = state => {
     return {
         grid: state.grid,
+        dataStructure: state.dataStructure,
         selectedAlgorithm: state.selectedAlgorithm,
-        isAlgorithmRunning: state.isAlgorithmRunning
+        algorithmStatus: state.algorithmStatus
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        clearBoard: () => clearBoard(dispatch),
+        showInitialBoard: () => dispatch(showInitialBoard()),
         runAlgorithm: () => dispatch(runAlgorithm()),
         stopAlgorithm: () => dispatch(stopAlgorithm()),
+        pauseAlgorithm: () => dispatch(pauseAlgorithm()),
         toggleVisitedNode: (row, col) => dispatch(toggleVisitedNode(row, col)),
         toggleFrontierNode: (row, col) => dispatch(toggleFrontierNode(row, col)),
-        togglePathNode: (row, col) => dispatch(togglePathNode(row, col))
+        togglePathNode: (row, col) => dispatch(togglePathNode(row, col)),
+        resetDataStructure: () => dispatch(resetDataStructure()),
+        setDataStructure: (dataStructure) => dispatch(setDataStructure(dataStructure))
     }
 }
 
