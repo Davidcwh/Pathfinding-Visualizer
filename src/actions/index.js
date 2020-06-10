@@ -29,13 +29,12 @@ export const stopAlgorithm = () => {
     return { type: 'STOP_ALGORITHM'};
 }
 
-const showInitialBoard = () => {
+export const showInitialBoard = () => {
     return { type: 'SHOW_INITIAL_BOARD'};
 }
 
-export const clearBoard = (dispatch) => {
-    dispatch(stopAlgorithm());
-    dispatch(showInitialBoard());
+export const pauseAlgorithm = () => {
+    return { type: 'PAUSE_ALGORITHM'};
 }
 
 export const toggleFrontierNode = (row, col) => {
@@ -68,5 +67,16 @@ export const togglePathNode = (row, col) => {
 export const setSelectedAlgorithm = (algorithmName) => {
     return {
         type: algorithmName
+    }
+}
+
+export const resetDataStructure = () => {
+    return { type: 'RESET_DATA_STRUCTURE' }
+}
+
+export const setDataStructure = (dataStructure) => {
+    return {
+        type: 'SET_DATA_STRUCTURE',
+        payload: dataStructure
     }
 }

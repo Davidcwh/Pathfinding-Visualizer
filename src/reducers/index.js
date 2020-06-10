@@ -23,6 +23,19 @@ const gridReducer = (state=generateInitalGrid(), action) => {
     }
 }
 
+const dataStructureReducer = (state=null, action) => {
+    switch(action.type) {
+        case 'RESET_DATA_STRUCTURE':
+            return null;
+
+        case 'SET_DATA_STRUCTURE':
+            return action.payload;
+
+        default:
+            return state;
+    }
+}
+
 const mousePressedReducer = (state=false, action) => {
     switch(action.type) {
         case 'PRESSED':
@@ -46,13 +59,16 @@ const selectAlgorithmReducer = (state='none', action) => {
     }
 }
 
-const runAlgorithmReducer = (state=false, action) => {
+const algorithmStatusReducer = (state='STOPPED', action) => {
     switch(action.type) {
         case 'RUN_ALGORITHM':
-            return true;
+            return 'RUNNING';
 
         case 'STOP_ALGORITHM':
-            return false;
+            return 'STOPPED';
+
+        case 'PAUSE_ALGORITHM':
+            return 'PAUSED';
 
         default:
             return state;
@@ -60,8 +76,9 @@ const runAlgorithmReducer = (state=false, action) => {
 }
 
 export default combineReducers({
-    isAlgorithmRunning: runAlgorithmReducer,
+    algorithmStatus: algorithmStatusReducer,
     selectedAlgorithm: selectAlgorithmReducer,
     grid: gridReducer,
+    dataStructure: dataStructureReducer,
     isMousePressed: mousePressedReducer
 });

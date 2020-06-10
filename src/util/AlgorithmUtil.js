@@ -1,5 +1,7 @@
 import { gridDetails } from '../constants';
-const { TOTAL_ROW, TOTAL_COL } = gridDetails;
+import { store } from '../index';
+import Stack from '@datastructures-js/stack';
+const { TOTAL_ROW, TOTAL_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -29,4 +31,37 @@ export const getNodeNeighbours = (state, node) => {
     }
 
     return neighbours;
+}
+
+export const isAlgorithmRunning = () => {
+    console.log(`isAlgorithmRunning:${store.getState().algorithmStatus} `)
+    return (store.getState().algorithmStatus === 'RUNNING');
+}
+
+export const isAlgorithmPaused = () => {
+    return (store.getState().algorithmStatus === 'PAUSED');
+}
+
+export const isAlgorithmStopped = () => {
+    return (store.getState().algorithmStatus === 'STOPPED');
+}
+
+export async function showPath(state, togglePathNode) {
+    const finishNode = state[FINISH_NODE_ROW][FINISH_NODE_COL];
+    let currentNode = finishNode;
+    const stack = new Stack();
+    while(currentNode !== undefined) {
+        stack.push(currentNode);
+
+        if(!currentNode.previousNode) {
+            break;
+        }
+        currentNode = state[currentNode.previousNode.row][currentNode.previousNode.col];
+    }
+
+    while(!stack.isEmpty()) {
+        let node = stack.pop();
+        togglePathNode(node.row, node.col);
+        await sleep(0);
+    }
 }
