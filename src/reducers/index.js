@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid } from '../util/GridGenerationUtil'
+import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid, generateGridWithWalls } from '../util/GridGenerationUtil'
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
@@ -17,6 +17,9 @@ const gridReducer = (state=generateInitalGrid(), action) => {
 
         case 'SHOW_INITIAL_BOARD':
             return generateInitalGrid();
+
+        case 'RESET_BOARD_WITH_WALLS':
+            return generateGridWithWalls(state);
 
         default:
             return state;
@@ -54,6 +57,9 @@ const selectAlgorithmReducer = (state='none', action) => {
         case 'BFS':
             return 'BFS';
 
+        case 'DFS':
+            return 'DFS';
+
         default:
             return state;
     }
@@ -75,9 +81,23 @@ const algorithmStatusReducer = (state='STOPPED', action) => {
     }
 }
 
+const isShowingPathReducer = (state=false, action) => {
+    switch(action.type) {
+        case 'SHOWING_PATH':
+            return true;
+
+        case 'NOT_SHOWING_PATH':
+            return false;
+        
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     algorithmStatus: algorithmStatusReducer,
     selectedAlgorithm: selectAlgorithmReducer,
+    isShowingPath: isShowingPathReducer,
     grid: gridReducer,
     dataStructure: dataStructureReducer,
     isMousePressed: mousePressedReducer

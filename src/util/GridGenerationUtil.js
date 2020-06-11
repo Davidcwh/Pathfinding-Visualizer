@@ -86,6 +86,22 @@ export function generateMarkPathGrid(row, col, currentGrid) {
     return newGrid;
 }
 
+export function generateGridWithWalls(currentGrid) {
+    const newGrid = generateInitalGrid();
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const currentNode = currentGrid[r][c];
+            if(!currentNode.isFinish && !currentNode.isStart) {  
+                newGrid[r][c].isWall = currentNode.isWall;
+            }
+            
+        }
+    }
+
+    return newGrid;
+}
+
 export function generateNodeKey(row, col) {
     return (row * TOTAL_ROW + col).toString();
 }
