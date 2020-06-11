@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure } from '../actions';
+import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure, notShowingPath } from '../actions';
 import BFS from '../util/algorithms/BFS';
+import DFS from '../util/algorithms/DFS';
 import { isAlgorithmRunning } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 
@@ -24,9 +25,10 @@ class Menu extends React.Component {
                 toggleVisitedNode, 
                 toggleFrontierNode, 
                 togglePathNode,
-                setDataStructure } = this.props;
+                setDataStructure,
+                isShowingPath } = this.props;
 
-        if(selectedAlgorithm === 'none') {
+        if(selectedAlgorithm === 'none' || isShowingPath) {
             return;
         }
 
@@ -43,6 +45,11 @@ class Menu extends React.Component {
                 await bfs.run(grid, dataStructure);
                 break;
 
+            case "DFS":
+                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                await dfs.run(grid, dataStructure);
+                break;
+
             default:
                 break;
         }
@@ -54,21 +61,22 @@ class Menu extends React.Component {
     }
 
     clearBoard() {
+        this.props.notShowingPath();
         this.props.stopAlgorithm();
         this.props.resetDataStructure();
         this.props.showInitialBoard();
     }
 
     render() {
-        const { selectedAlgorithm, algorithmStatus } = this.props;
+        const { selectedAlgorithm, algorithmStatus, isShowingPath } = this.props;
 
-        const runButtonClass = selectedAlgorithm === 'none' ? "active item" : "item";
+        const runButtonClass = (selectedAlgorithm === 'none' || isShowingPath) ? "active item" : "item";
 
-        const runButtonText = (algorithmStatus === 'RUNNING') ? "Pause" : "Run";
+        const runButtonText = (algorithmStatus === 'RUNNING') ? (isShowingPath ? "Complete" : "Pause") : "Run";
 
         return (
             <div className="ui three item menu">
-                <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
+                <a  onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
                 <SelectAlgorithmDropdown />
                 <a onClick={this.clearBoard} className="item">Clear Board</a>
             </div>
@@ -81,7 +89,8 @@ const mapStateToProps = state => {
         grid: state.grid,
         dataStructure: state.dataStructure,
         selectedAlgorithm: state.selectedAlgorithm,
-        algorithmStatus: state.algorithmStatus
+        algorithmStatus: state.algorithmStatus,
+        isShowingPath: state.isShowingPath
     }
 }
 
@@ -95,7 +104,8 @@ const mapDispatchToProps = dispatch => {
         toggleFrontierNode: (row, col) => dispatch(toggleFrontierNode(row, col)),
         togglePathNode: (row, col) => dispatch(togglePathNode(row, col)),
         resetDataStructure: () => dispatch(resetDataStructure()),
-        setDataStructure: (dataStructure) => dispatch(setDataStructure(dataStructure))
+        setDataStructure: (dataStructure) => dispatch(setDataStructure(dataStructure)),
+        notShowingPath: () => dispatch(notShowingPath())
     }
 }
 

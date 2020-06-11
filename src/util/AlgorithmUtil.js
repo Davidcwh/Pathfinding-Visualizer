@@ -1,6 +1,8 @@
 import { gridDetails } from '../constants';
 import { store } from '../index';
 import Stack from '@datastructures-js/stack';
+import { showingPath, notShowingPath } from '../actions';
+
 const { TOTAL_ROW, TOTAL_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export function sleep(ms) {
@@ -46,7 +48,13 @@ export const isAlgorithmStopped = () => {
     return (store.getState().algorithmStatus === 'STOPPED');
 }
 
+const isShowingPath = () => {
+    return store.getState().isShowingPath;
+}
+
 export async function showPath(state, togglePathNode) {
+    store.dispatch(showingPath());
+
     const finishNode = state[FINISH_NODE_ROW][FINISH_NODE_COL];
     let currentNode = finishNode;
     const stack = new Stack();
@@ -60,8 +68,14 @@ export async function showPath(state, togglePathNode) {
     }
 
     while(!stack.isEmpty()) {
+        if(isAlgorithmStopped() || !isShowingPath()) {
+            return;
+        }
+
         let node = stack.pop();
         togglePathNode(node.row, node.col);
         await sleep(0);
     }
+
+    store.dispatch(notShowingPath());
 }

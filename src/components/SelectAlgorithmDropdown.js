@@ -4,14 +4,35 @@ import { Dropdown } from 'semantic-ui-react';
 import { setSelectedAlgorithm } from '../actions';
 
 const options = [
-    { key: 1, text: 'Breadth First Search (BFS)', value: 'BFS' }
+    { key: 1, text: 'Breadth First Search (BFS)', value: 'BFS' },
+    { key: 2, text: 'Depth First Search (DFS)', value: 'DFS' }
   ]
 
 class SelectAlgorithmDropdown extends React.Component {
     render() {
+        const selectedAlgorithmText = this.props.selectedAlgorithm === 'none' ? 'Select Algorithm' 
+                                                                              : this.props.selectedAlgorithm === 'BFS'
+                                                                              ? 'Breadth First Search (BFS)'
+                                                                              : this.props.selectedAlgorithm === 'DFS'
+                                                                              ? 'Depth First Search (BFS)'
+                                                                              : 'Select Algorithm';
+
+        const disabled = this.props.algorithmStatus !== 'STOPPED';
+
         return (
-            <Dropdown fluid text='Select Algorithm' options={options} simple item onChange={(event, data) => {this.props.onChange(data.value)}}/>
+            <Dropdown 
+                fluid text={selectedAlgorithmText} 
+                options={options} 
+                simple item onChange={(event, data) => {this.props.onChange(data.value)}}
+                disabled={disabled}/>
         );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        selectedAlgorithm: state.selectedAlgorithm,
+        algorithmStatus: state.algorithmStatus
     }
 }
 
@@ -21,4 +42,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
   
-export default connect(null, mapDispatchToProps)(SelectAlgorithmDropdown)
+export default connect(mapStateToProps, mapDispatchToProps)(SelectAlgorithmDropdown)

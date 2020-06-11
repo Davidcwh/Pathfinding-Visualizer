@@ -33,6 +33,10 @@ export const showInitialBoard = () => {
     return { type: 'SHOW_INITIAL_BOARD'};
 }
 
+export const resetBoardWithWalls = () => {
+    return { type: 'RESET_BOARD_WITH_WALLS'};
+}
+
 export const pauseAlgorithm = () => {
     return { type: 'PAUSE_ALGORITHM'};
 }
@@ -79,4 +83,12 @@ export const setDataStructure = (dataStructure) => {
         type: 'SET_DATA_STRUCTURE',
         payload: dataStructure
     }
+}
+
+export const showingPath = () => {
+    return { type: 'SHOWING_PATH' };
+}
+
+export const notShowingPath = () => {
+    return { type: 'NOT_SHOWING_PATH' };
 }
