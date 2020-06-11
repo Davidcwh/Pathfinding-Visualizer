@@ -37,7 +37,7 @@ export default class DFS {
                     stack.push(neighbour);
                 }
             }
-            await sleep(0);
+            await sleep(10);
 
         }
 
