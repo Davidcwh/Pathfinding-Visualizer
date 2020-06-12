@@ -12,6 +12,7 @@ function NodeFactory(row, col) {
         isVisited: false,
         isWall: false,
         isFrontier: false,
+        isHead: false,
         previousNode: null,
         isPath: false
       };
@@ -52,7 +53,7 @@ export function generateToggleFrontierGrid(row, col, currentGrid) {
 
     const newNode = {
         ...node,
-        isFrontier: !node.isFrontier
+        isFrontier: true
     };
     newGrid[row][col] = newNode;
             
@@ -99,6 +100,32 @@ export function generateGridWithWalls(currentGrid) {
         }
     }
 
+    return newGrid;
+}
+
+export function generateMarkHeadGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+    const node = newGrid[row][col];
+
+    const newNode = {
+        ...node,
+        isHead: true
+    };
+    newGrid[row][col] = newNode;
+            
+    return newGrid;
+}
+
+export function generateUnmarkHeadGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+    const node = newGrid[row][col];
+
+    const newNode = {
+        ...node,
+        isHead: false
+    };
+    newGrid[row][col] = newNode;
+            
     return newGrid;
 }
 

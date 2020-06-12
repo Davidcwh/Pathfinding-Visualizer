@@ -29,6 +29,10 @@
   background-color: orange;
 }
 
+.node-head {
+  background-color: yellow;
+}
+
 .node-path {
   background-color: palevioletred;
 }

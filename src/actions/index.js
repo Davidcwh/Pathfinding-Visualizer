@@ -41,6 +41,10 @@ export const pauseAlgorithm = () => {
     return { type: 'PAUSE_ALGORITHM'};
 }
 
+export const completeAlgorithm = () => {
+    return { type: 'COMPLETE_ALGORITHM'};
+}
+
 export const toggleFrontierNode = (row, col) => {
     return {
         type: 'TOGGLE_FRONTIER_NODE',
@@ -91,4 +95,22 @@ export const showingPath = () => {
 
 export const notShowingPath = () => {
     return { type: 'NOT_SHOWING_PATH' };
+}
+
+export const markHeadNode = (row, col) => {
+    return {
+        type: 'MARK_HEAD_NODE',
+        payload: {
+            row, col
+        }
+    }
+}
+
+export const unmarkHeadNode = (row, col) => {
+    return {
+        type: 'UNMARK_HEAD_NODE',
+        payload: {
+            row, col
+        }
+    }
 }

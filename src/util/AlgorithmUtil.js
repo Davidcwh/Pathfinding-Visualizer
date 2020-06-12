@@ -74,7 +74,7 @@ export async function showPath(state, togglePathNode) {
 
         let node = stack.pop();
         togglePathNode(node.row, node.col);
-        await sleep(0);
+        await sleep(20);
     }
 
     store.dispatch(notShowingPath());

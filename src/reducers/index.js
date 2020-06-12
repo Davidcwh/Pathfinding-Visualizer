@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid, generateGridWithWalls } from '../util/GridGenerationUtil'
+import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid, generateGridWithWalls, generateMarkHeadGrid, generateUnmarkHeadGrid } from '../util/GridGenerationUtil'
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
@@ -20,6 +20,12 @@ const gridReducer = (state=generateInitalGrid(), action) => {
 
         case 'RESET_BOARD_WITH_WALLS':
             return generateGridWithWalls(state);
+
+        case 'MARK_HEAD_NODE':
+            return generateMarkHeadGrid(action.payload.row, action.payload.col, state);
+
+        case 'UNMARK_HEAD_NODE':
+            return generateUnmarkHeadGrid(action.payload.row, action.payload.col, state);
 
         default:
             return state;
@@ -75,6 +81,9 @@ const algorithmStatusReducer = (state='STOPPED', action) => {
 
         case 'PAUSE_ALGORITHM':
             return 'PAUSED';
+
+        case 'COMPLETE_ALGORITHM':
+            return 'COMPLETE';
 
         default:
             return state;
