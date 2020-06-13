@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, completeAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure, notShowingPath, markHeadNode, unmarkHeadNode, resetBoardWithWalls } from '../actions';
+import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, completeAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure, notShowingPath, markHeadNode, unmarkHeadNode, resetBoardWithWalls, markBacktrackNodes } from '../actions';
 import BFS from '../util/algorithms/BFS';
 import DFS from '../util/algorithms/DFS';
 import { isAlgorithmRunning } from '../util/AlgorithmUtil'
@@ -18,7 +18,6 @@ class Menu extends React.Component {
     async runSelectedAlgorithm() {
         const { selectedAlgorithm, 
                 runAlgorithm, 
-                stopAlgorithm, 
                 pauseAlgorithm,
                 completeAlgorithm, 
                 grid,
@@ -30,7 +29,8 @@ class Menu extends React.Component {
                 isShowingPath,
                 markHeadNode,
                 unmarkHeadNode,
-                algorithmStatus } = this.props;
+                algorithmStatus,
+                markBacktrackNodes } = this.props;
 
         if(selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') {
             return;
@@ -50,7 +50,7 @@ class Menu extends React.Component {
                 break;
 
             case "DFS":
-                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, setDataStructure);
+                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure);
                 await dfs.run(grid, dataStructure);
                 break;
 
@@ -127,7 +127,8 @@ const mapDispatchToProps = dispatch => {
         notShowingPath: () => dispatch(notShowingPath()),
         markHeadNode: (row, col) => dispatch(markHeadNode(row, col)),
         unmarkHeadNode: (row, col) => dispatch(unmarkHeadNode(row, col)),
-        resetBoardWithWalls: () => dispatch(resetBoardWithWalls())
+        resetBoardWithWalls: () => dispatch(resetBoardWithWalls()),
+        markBacktrackNodes: (array) => dispatch(markBacktrackNodes(array))
     }
 }
 

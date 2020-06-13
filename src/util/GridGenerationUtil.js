@@ -13,6 +13,7 @@ function NodeFactory(row, col) {
         isWall: false,
         isFrontier: false,
         isHead: false,
+        isBacktrack: false,
         previousNode: null,
         isPath: false
       };
@@ -125,6 +126,23 @@ export function generateUnmarkHeadGrid(row, col, currentGrid) {
         isHead: false
     };
     newGrid[row][col] = newNode;
+            
+    return newGrid;
+}
+
+export function generateMarkBacktrackGrid(array, currentGrid) {
+    const newGrid = currentGrid.slice();
+
+    for(let i = 0; i < array.length; i++) {
+        const { row, col } = array[i];
+        const node = newGrid[row][col];
+
+        const newNode = {
+            ...node,
+            isBacktrack: true
+        };
+        newGrid[row][col] = newNode;
+    }
             
     return newGrid;
 }

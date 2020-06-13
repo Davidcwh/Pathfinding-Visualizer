@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid, generateGridWithWalls, generateMarkHeadGrid, generateUnmarkHeadGrid } from '../util/GridGenerationUtil'
+import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid, generateGridWithWalls, generateMarkHeadGrid, generateUnmarkHeadGrid, generateMarkBacktrackGrid } from '../util/GridGenerationUtil'
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
@@ -26,6 +26,9 @@ const gridReducer = (state=generateInitalGrid(), action) => {
 
         case 'UNMARK_HEAD_NODE':
             return generateUnmarkHeadGrid(action.payload.row, action.payload.col, state);
+
+        case 'MARK_BACKTRACK_NODE':
+            return generateMarkBacktrackGrid(action.payload.array, state);
 
         default:
             return state;

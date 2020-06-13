@@ -5,12 +5,13 @@ import Stack from '@datastructures-js/stack';
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export default class DFS {
-    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, setDataStructure) {
+    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure) {
         this.toggleVisitedNode = toggleVisitedNode;
         this.toggleFrontierNode = toggleFrontierNode;
         this.togglePathNode = togglePathNode;
         this.markHeadNode = markHeadNode;
         this.unmarkHeadNode = unmarkHeadNode;
+        this.markBacktrackNodes = markBacktrackNodes;
         this.setDataStructure = setDataStructure;
     }
 
@@ -68,6 +69,8 @@ export default class DFS {
                 }
             }
 
+            visitedStack.push(currentNode);
+
             const validNeighbours = neighbours.filter(neighbour => !neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier)
 
             if(validNeighbours.length === 0) {
@@ -79,11 +82,9 @@ export default class DFS {
                 await sleep(20);
                 wasBacktracking = await this.backtrack(visitedStack, unvisitedStack, grid);
                
-            } else {
-                visitedStack.push(currentNode);
             }
 
-            await sleep(20);
+            await sleep(50);
         }
 
         if(isAlgorithmPaused()) {
@@ -96,32 +97,23 @@ export default class DFS {
         }
     }
 
-
     async backtrack(visitedStack, unvisitedStack, grid) {
+
+        let backtrackNodes = [];
 
         while(!visitedStack.isEmpty() && !unvisitedStack.isEmpty() && isAlgorithmRunning()) {
             const visitedNode = visitedStack.pop();
-            this.markHeadNode(visitedNode.row, visitedNode.col);
-            await sleep(50);
-            this.unmarkHeadNode(visitedNode.row, visitedNode.col);
 
             let neighbours = getNodeNeighbours(grid, visitedNode);
             neighbours = neighbours.filter(neighbour => !neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier)
             if(this.contains(neighbours, unvisitedStack.peek())) {
                 // console.log(`backtrack ${unvisitedStack.peek().row}, ${unvisitedStack.peek().col}`)
                 visitedStack.push(visitedNode);
-                return false;
-            }
-            await sleep(50);
-        }
-
-        if(isAlgorithmPaused()) {
-            this.setDataStructure({ unvisitedStack: unvisitedStack, visitedStack: visitedStack, wasBacktracking: true });
-            return true;
-        }
-
-        if(isAlgorithmStopped()) {
-            return;
+                this.markBacktrackNodes(backtrackNodes);
+                return;
+            } else {
+                backtrackNodes.push(visitedNode);
+            }   
         }
 
     }
