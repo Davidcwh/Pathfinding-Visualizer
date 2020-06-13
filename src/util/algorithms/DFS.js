@@ -17,6 +17,7 @@ export default class DFS {
     async run(grid, stacks) {
         let unvisitedStack = null;
         let visitedStack = null;
+        let wasBacktracking = null;
 
         if(stacks === null) {
             unvisitedStack = new Stack();
@@ -24,13 +25,22 @@ export default class DFS {
             unvisitedStack.push(startNode);
 
             visitedStack = new Stack();
+            wasBacktracking = false;
         } else {
             unvisitedStack = stacks.unvisitedStack;
             visitedStack = stacks.visitedStack;
+            wasBacktracking = stacks.wasBacktracking;
         }
-
+        console.log(`wasBacktracking: ${wasBacktracking}`)
 
         while(!unvisitedStack.isEmpty() && isAlgorithmRunning()) {
+            if(wasBacktracking) {
+                wasBacktracking = await this.backtrack(visitedStack, unvisitedStack, grid);
+                await sleep(20);
+                continue;
+            }
+
+
             const currentNode = unvisitedStack.pop();
             unvisitedStack = this.removeFromStack(unvisitedStack, currentNode);
 
@@ -68,7 +78,7 @@ export default class DFS {
                 currentNode.isHead = false;
                 this.unmarkHeadNode(currentNode.row, currentNode.col);
                 await sleep(20);
-                await this.backtrack(visitedStack, unvisitedStack, grid);
+                wasBacktracking = await this.backtrack(visitedStack, unvisitedStack, grid);
                
             } else {
                 visitedStack.push(currentNode);
@@ -78,7 +88,7 @@ export default class DFS {
         }
 
         if(isAlgorithmPaused()) {
-            this.setDataStructure({ unvisitedStack: unvisitedStack, visitedStack: visitedStack });
+            this.setDataStructure({ unvisitedStack: unvisitedStack, visitedStack: visitedStack, wasBacktracking: wasBacktracking });
             return;
         }
 
@@ -89,7 +99,8 @@ export default class DFS {
 
 
     async backtrack(visitedStack, unvisitedStack, grid) {
-        while(!visitedStack.isEmpty() && !unvisitedStack.isEmpty()) {
+
+        while(!visitedStack.isEmpty() && !unvisitedStack.isEmpty() && isAlgorithmRunning()) {
             const visitedNode = visitedStack.pop();
             this.markHeadNode(visitedNode.row, visitedNode.col);
             await sleep(50);
@@ -100,10 +111,20 @@ export default class DFS {
             if(this.contains(neighbours, unvisitedStack.peek())) {
                 // console.log(`backtrack ${unvisitedStack.peek().row}, ${unvisitedStack.peek().col}`)
                 visitedStack.push(visitedNode);
-                return;
+                return false;
             }
             await sleep(50);
         }
+
+        if(isAlgorithmPaused()) {
+            this.setDataStructure({ unvisitedStack: unvisitedStack, visitedStack: visitedStack, wasBacktracking: true });
+            return true;
+        }
+
+        if(isAlgorithmStopped()) {
+            return;
+        }
+
     }
 
     contains(neighbours, target) {
