@@ -95,9 +95,11 @@ export default class DFS {
             await sleep(50);
             this.unmarkHeadNode(visitedNode.row, visitedNode.col);
 
-            const neighbours = getNodeNeighbours(grid, visitedNode);
+            let neighbours = getNodeNeighbours(grid, visitedNode);
+            neighbours = neighbours.filter(neighbour => !neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier)
             if(this.contains(neighbours, unvisitedStack.peek())) {
-                //console.log(`backtrack ${unvisitedStack.peek().row}, ${unvisitedStack.peek().col}`)
+                // console.log(`backtrack ${unvisitedStack.peek().row}, ${unvisitedStack.peek().col}`)
+                visitedStack.push(visitedNode);
                 return;
             }
             await sleep(50);
