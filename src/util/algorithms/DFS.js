@@ -83,7 +83,7 @@ export default class DFS {
                 visitedStack.push(currentNode);
             }
 
-            await sleep(20);
+            await sleep(50);
         }
 
         if(isAlgorithmPaused()) {
