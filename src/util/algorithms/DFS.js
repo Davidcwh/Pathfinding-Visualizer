@@ -31,7 +31,6 @@ export default class DFS {
             visitedStack = stacks.visitedStack;
             wasBacktracking = stacks.wasBacktracking;
         }
-        console.log(`wasBacktracking: ${wasBacktracking}`)
 
         while(!unvisitedStack.isEmpty() && isAlgorithmRunning()) {
             if(wasBacktracking) {
