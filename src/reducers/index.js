@@ -72,6 +72,9 @@ const selectAlgorithmReducer = (state='none', action) => {
         case 'ASTAR':
             return 'ASTAR';
 
+        case 'GREED':
+            return 'GREED';
+
         default:
             return state;
     }
