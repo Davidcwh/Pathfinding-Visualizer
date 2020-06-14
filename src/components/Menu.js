@@ -60,6 +60,11 @@ class Menu extends React.Component {
                 await aStar.run(grid, dataStructure);
                 break;
 
+            case "GREED":
+                const greedy = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                await greedy.run(grid, dataStructure);
+                break;
+
             default:
                 break;
         }

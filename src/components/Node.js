@@ -22,7 +22,7 @@ const Node = ({ row, col, isStart, isFinish, isWall, isHead, isVisited, isFronti
         ? 'node-frontier'
         : ''
 
-    const value = ((selectedAlgorithm === 'ASTAR') && (gCost !== null)) ? fCost : ''
+    const value = ((selectedAlgorithm === 'ASTAR' || selectedAlgorithm === 'GREED') && (fCost !== null)) ? fCost : ''
 
     return <div 
             id={`node-${row}-${col}`}
