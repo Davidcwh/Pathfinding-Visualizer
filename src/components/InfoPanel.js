@@ -18,6 +18,7 @@ const InfoPanel = () => {
             <LegendItem nodeType={'finish'} />
             <LegendItem nodeType={'wall'} />
             <LegendItem nodeType={'visited'} />
+            <LegendItem nodeType={'backtrack'} />
             <LegendItem nodeType={'frontier'} />
             <LegendItem nodeType={'path'} />
         </div>

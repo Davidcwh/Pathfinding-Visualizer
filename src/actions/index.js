@@ -114,3 +114,10 @@ export const unmarkHeadNode = (row, col) => {
         }
     }
 }
+
+export const markBacktrackNodes = (array) => {
+    return  {
+        type: 'MARK_BACKTRACK_NODE',
+        payload: { array }
+    }
+}
