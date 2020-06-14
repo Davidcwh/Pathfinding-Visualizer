@@ -1,6 +1,7 @@
 import { gridDetails } from '../constants';
 import { store } from '../index';
 import Stack from '@datastructures-js/stack';
+import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 import { showingPath, notShowingPath } from '../actions';
 
 const { TOTAL_ROW, TOTAL_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
@@ -36,7 +37,6 @@ export const getNodeNeighbours = (state, node) => {
 }
 
 export const isAlgorithmRunning = () => {
-    console.log(`isAlgorithmRunning:${store.getState().algorithmStatus} `)
     return (store.getState().algorithmStatus === 'RUNNING');
 }
 
@@ -78,4 +78,35 @@ export async function showPath(state, togglePathNode) {
     }
 
     store.dispatch(notShowingPath());
+}
+
+export const calculateMahattanDistance = (nodeRow, nodeCol, targetRow, targetCol) => {
+    return Math.abs(nodeRow - targetRow) + Math.abs(nodeCol - targetCol);
+}
+
+export const updatePqueue = (pqueue, node) => {
+    const { row, col, fCost } = node;
+    const newPqueue = new MinPriorityQueue({ priority: (node) => node.fCost });
+    let inQueue = false;
+
+    while(!pqueue.isEmpty()) {
+        const frontierNode = pqueue.dequeue().element;
+
+        if(frontierNode.row === row && frontierNode.col === col) {
+            inQueue = true;
+            if(frontierNode.fCost <= fCost) {
+                newPqueue.enqueue(frontierNode);
+            } else {    
+                newPqueue.enqueue(node);
+            }
+        } else {
+            newPqueue.enqueue(frontierNode);
+        }
+    }
+
+    if(!inQueue) {
+        newPqueue.enqueue(node);
+    }
+
+    return newPqueue;
 }
