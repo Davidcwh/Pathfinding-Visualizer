@@ -186,8 +186,19 @@ export function getStatistics(grid, show) {
         }
     }
 
-    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.backtrack - stats.frontier - stats.path;
+    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.backtrack - stats.frontier;
     stats.show = show;
 
     return stats;
+}
+
+export function resetStatistics(wall, resetWall) {
+    const stats = { ...defaultStatistics };
+
+    if(!resetWall) {
+        stats.wall = wall;
+        stats.unvisited = stats.unvisited - wall;
+    }
+
+    return stats
 }

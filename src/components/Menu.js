@@ -70,17 +70,17 @@ class Menu extends React.Component {
                 break;
 
             case "DFS":
-                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure);
+                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure, updateStatistics);
                 await dfs.run(grid, dataStructure);
                 break;
 
             case "ASTAR":
-                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
                 await aStar.run(grid, dataStructure);
                 break;
 
             case "GREED":
-                const greedy = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                const greedy = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
                 await greedy.run(grid, dataStructure);
                 break;
 
@@ -98,7 +98,7 @@ class Menu extends React.Component {
         this.props.notShowingPath();
         this.props.stopAlgorithm();
         this.props.resetDataStructure();
-        this.props.resetStatistics();
+        this.props.resetStatistics(clearWall);
 
         if(clearWall) {
             this.props.showInitialBoard();
@@ -162,7 +162,7 @@ const mapDispatchToProps = dispatch => {
         resetBoardWithWalls: () => dispatch(resetBoardWithWalls()),
         markBacktrackNodes: (array) => dispatch(markBacktrackNodes(array)),
         updateStatistics: (grid) => dispatch(updateStatistics(grid)),
-        resetStatistics: () => dispatch(resetStatistics()),
+        resetStatistics: (resetWall) => dispatch(resetStatistics(resetWall)),
         showStatistics: () => dispatch(resetStatistics()),
         hideStatistics: () => dispatch(hideStatistics())
     }

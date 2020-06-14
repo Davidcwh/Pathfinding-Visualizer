@@ -124,11 +124,16 @@ export const markBacktrackNodes = (array) => {
 }
 
 export const updateStatistics = (grid) => {
-    return { type: 'UPDATE_STATISTICS', payload: grid };
+    return { 
+        type: 'UPDATE_STATISTICS', 
+        payload: grid 
+    };
 }
 
-export const resetStatistics = () => {
-    return { type: 'RESET_STATISTICS' };
+export const resetStatistics = (resetWall) => {
+    return { 
+        type: 'RESET_STATISTICS',
+        payload: resetWall };
 }
 
 export const showStatistics = () => {

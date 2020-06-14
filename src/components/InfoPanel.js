@@ -13,6 +13,8 @@ class InfoPanel extends React.Component {
                 frontier,
                 path } = this.props.statistics;
 
+        const displayValue = (value) => (value === 0) ? "" : `${value} ` 
+
 
         return (
             <div style={{width: "85%", margin: "auto", marginTop: "2vh"}}>
@@ -33,42 +35,42 @@ class InfoPanel extends React.Component {
                     </div>
     
                     <div class="statistic">
-                        <div class="value">{unvisited} <div className={`node node-unvisited`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
+                        <div class="value">{displayValue(unvisited)} <div className={`node node-unvisited`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
                         <div class="label">
                             <div>unvisited</div>
                         </div>
                     </div>
     
                     <div class="statistic">
-                        <div class="value">{wall} <div className={`node node-wall`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
+                        <div class="value">{displayValue(wall)} <div className={`node node-wall`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
                         <div class="label">
                             <div>wall</div>
                         </div>
                     </div>
     
                     <div class="statistic">
-                        <div class="value">{visited} <div className={`node node-visited`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
+                        <div class="value">{displayValue(visited)} <div className={`node node-visited`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
                         <div class="label">
                             <div>visited</div>
                         </div>
                     </div>
     
                     <div class="statistic">
-                        <div class="value">{backtrack} <div className={`node node-backtrack`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
+                        <div class="value">{displayValue(backtrack)} <div className={`node node-backtrack`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
                         <div class="label">
                             <div>backtrack</div>
                         </div>
                     </div>
     
                     <div class="statistic">
-                        <div class="value">{frontier} <div className={`node node-frontier`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
+                        <div class="value">{displayValue(frontier)} <div className={`node node-frontier`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
                         <div class="label">
                             <div>frontier</div>
                         </div>
                     </div>
     
                     <div class="statistic">
-                        <div class="value">{path} <div className={`node node-path`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
+                        <div class="value">{displayValue(path)} <div className={`node node-path`} style={{border: "2px solid white", borderRadius: "5px"}} /></div>
                         <div class="label">
                             <div>path</div>
                         </div>

@@ -9,7 +9,8 @@ import { generateInitalGrid,
          generateMarkHeadGrid, 
          generateUnmarkHeadGrid, 
          generateMarkBacktrackGrid, 
-         getStatistics } from '../util/GridGenerationUtil'
+         getStatistics,
+         resetStatistics } from '../util/GridGenerationUtil';
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
@@ -128,7 +129,7 @@ const statisticsReducer = (state=defaultStatistics, action) => {
             return getStatistics(action.payload, state.show);
 
         case 'RESET_STATISTICS':
-            return defaultStatistics;
+            return resetStatistics(state.wall, action.payload);
 
         case 'SHOW_STATISTICS':
             return { ...defaultStatistics, show: true };
