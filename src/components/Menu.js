@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, completeAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure, notShowingPath, markHeadNode, unmarkHeadNode, resetBoardWithWalls, markBacktrackNodes } from '../actions';
 import BFS from '../util/algorithms/BFS';
 import DFS from '../util/algorithms/DFS';
+import AStar from '../util/algorithms/AStar';
 import { isAlgorithmRunning } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 
@@ -52,6 +53,11 @@ class Menu extends React.Component {
             case "DFS":
                 const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure);
                 await dfs.run(grid, dataStructure);
+                break;
+
+            case "ASTAR":
+                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                await aStar.run(grid, dataStructure);
                 break;
 
             default:

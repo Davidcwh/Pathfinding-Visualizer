@@ -5,7 +5,8 @@ import { setSelectedAlgorithm } from '../actions';
 
 const options = [
     { key: 1, text: 'Breadth First Search (BFS)', value: 'BFS' },
-    { key: 2, text: 'Depth First Search (DFS)', value: 'DFS' }
+    { key: 2, text: 'Depth First Search (DFS)', value: 'DFS' },
+    { key: 3, text: 'A* Search', value: 'ASTAR' }
   ]
 
 class SelectAlgorithmDropdown extends React.Component {
@@ -15,6 +16,8 @@ class SelectAlgorithmDropdown extends React.Component {
                                                                               ? 'Breadth First Search (BFS)'
                                                                               : this.props.selectedAlgorithm === 'DFS'
                                                                               ? 'Depth First Search (BFS)'
+                                                                              : this.props.selectedAlgorithm === 'ASTAR'
+                                                                              ? 'A* Search'
                                                                               : 'Select Algorithm';
 
         const disabled = this.props.algorithmStatus !== 'STOPPED';

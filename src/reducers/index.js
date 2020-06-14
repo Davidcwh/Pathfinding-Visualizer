@@ -69,6 +69,9 @@ const selectAlgorithmReducer = (state='none', action) => {
         case 'DFS':
             return 'DFS';
 
+        case 'ASTAR':
+            return 'ASTAR';
+
         default:
             return state;
     }

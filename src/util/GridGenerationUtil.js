@@ -1,4 +1,5 @@
 import { gridDetails } from '../constants';
+import { calculateMahattanDistance } from './AlgorithmUtil';
 
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
 
@@ -15,7 +16,10 @@ function NodeFactory(row, col) {
         isHead: false,
         isBacktrack: false,
         previousNode: null,
-        isPath: false
+        isPath: false,
+        hCost: calculateMahattanDistance(row, col, FINISH_NODE_ROW, FINISH_NODE_COL),
+        gCost: null,
+        fCost: null
       };
 }
 
