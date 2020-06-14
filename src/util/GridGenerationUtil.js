@@ -1,5 +1,7 @@
-import { gridDetails } from '../constants';
+import { gridDetails, defaultStatistics } from '../constants';
 import { calculateMahattanDistance } from './AlgorithmUtil';
+import { store } from '../index';
+import { updateStatistics } from '../actions';
 
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
 
@@ -153,4 +155,39 @@ export function generateMarkBacktrackGrid(array, currentGrid) {
 
 export function generateNodeKey(row, col) {
     return (row * TOTAL_ROW + col).toString();
+}
+
+export function getStatistics(grid, show) {
+    const stats = { ...defaultStatistics };
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const node = grid[r][c];
+
+            if(node.isWall) {
+                stats.wall++;
+            }
+
+            if(node.isVisited) {
+                stats.visited++;
+            }
+
+            if(node.isBacktrack) {
+                stats.backtrack++;
+            }
+
+            if(node.isFrontier) {
+                stats.frontier++;
+            }
+            
+            if(node.isPath) {
+                stats.path++;
+            }
+        }
+    }
+
+    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.backtrack - stats.frontier - stats.path;
+    stats.show = show;
+
+    return stats;
 }

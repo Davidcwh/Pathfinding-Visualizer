@@ -1,5 +1,15 @@
 import { combineReducers } from 'redux';
-import { generateInitalGrid, generateToggleWallGrid, generateToggleFrontierGrid, generateMarkVisitedGrid, generateMarkPathGrid, generateGridWithWalls, generateMarkHeadGrid, generateUnmarkHeadGrid, generateMarkBacktrackGrid } from '../util/GridGenerationUtil'
+import { defaultStatistics } from '../constants';
+import { generateInitalGrid,
+         generateToggleWallGrid, 
+         generateToggleFrontierGrid, 
+         generateMarkVisitedGrid, 
+         generateMarkPathGrid, 
+         generateGridWithWalls, 
+         generateMarkHeadGrid, 
+         generateUnmarkHeadGrid, 
+         generateMarkBacktrackGrid, 
+         getStatistics } from '../util/GridGenerationUtil'
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
@@ -112,7 +122,27 @@ const isShowingPathReducer = (state=false, action) => {
     }
 }
 
+const statisticsReducer = (state=defaultStatistics, action) => {
+    switch(action.type) {
+        case 'UPDATE_STATISTICS':
+            return getStatistics(action.payload, state.show);
+
+        case 'RESET_STATISTICS':
+            return defaultStatistics;
+
+        case 'SHOW_STATISTICS':
+            return { ...defaultStatistics, show: true };
+
+        case 'HIDE_STATISTICS':
+            return { ...defaultStatistics, show: false }
+        
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
+    statistics: statisticsReducer,
     algorithmStatus: algorithmStatusReducer,
     selectedAlgorithm: selectAlgorithmReducer,
     isShowingPath: isShowingPathReducer,
