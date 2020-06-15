@@ -49,7 +49,7 @@ export default class Greedy {
                     this.toggleFrontierNode(neighbour.row, neighbour.col);
 
                     neighbour.fCost = neighbour.hCost;
-                    pqueue = updatePqueue(pqueue, neighbour);
+                    pqueue.enqueue(neighbour);
                 }
             }
 

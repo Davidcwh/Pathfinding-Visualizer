@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import BFS from '../util/algorithms/BFS';
 import DFS from '../util/algorithms/DFS';
 import AStar from '../util/algorithms/AStar';
+import Greedy from '../util/algorithms/Greedy';
 import { isAlgorithmRunning } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 import { showInitialBoard, 
@@ -80,7 +81,7 @@ class Menu extends React.Component {
                 break;
 
             case "GREED":
-                const greedy = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
+                const greedy = new Greedy(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
                 await greedy.run(grid, dataStructure);
                 break;
 

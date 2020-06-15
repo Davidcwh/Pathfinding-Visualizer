@@ -45,13 +45,31 @@ export default class AStar {
                         return;
                     }
 
-                    neighbour.isFrontier = true;
-                    neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
-                    this.toggleFrontierNode(neighbour.row, neighbour.col);
+                    // neighbour.isFrontier = true;
+                    // neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                    // this.toggleFrontierNode(neighbour.row, neighbour.col);
                     
-                    neighbour.gCost = currentNode.gCost + 1;
-                    neighbour.fCost = neighbour.gCost + neighbour.hCost;
-                    pqueue = updatePqueue(pqueue, neighbour);
+                    // neighbour.gCost = currentNode.gCost + 1;
+                    // neighbour.fCost = neighbour.gCost + neighbour.hCost;
+                    // pqueue = updatePqueue(pqueue, neighbour);
+
+                    const tempG = currentNode.gCost + 1;
+                    const tempF = tempG + neighbour.hCost;
+                    if(neighbour.gCost !== null) {
+                        if(tempF < neighbour.fCost) {
+                            neighbour.gCost = tempG;
+                            neighbour.fCost = tempF;
+                            neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                        } 
+                    } else {
+                        neighbour.gCost = tempG;
+                        neighbour.fCost = tempF;
+                        pqueue.enqueue(neighbour);
+                        neighbour.isFrontier = true;
+                        neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                    }
+
+                    this.toggleFrontierNode(neighbour.row, neighbour.col);
                 }
             }
 
