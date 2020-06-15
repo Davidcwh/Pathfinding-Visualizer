@@ -6,3 +6,13 @@ export const gridDetails = {
     FINISH_NODE_ROW: 10,
     FINISH_NODE_COL: 45 
 }
+
+export const defaultStatistics = {
+    show: false,
+    wall: 0,
+    unvisited: gridDetails.TOTAL_ROW * gridDetails.TOTAL_COL - 2,
+    visited: 0,
+    backtrack: 0,
+    frontier: 0,
+    path: 0
+}

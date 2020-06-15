@@ -15,9 +15,10 @@ export const mouseIsNotPressed = () => {
     return { type: 'NOT_PRESSED'};
 }
 
-export const onMouseDown = (row, col, dispatch) => {
+export const onMouseDown = (row, col, dispatch, grid) => {
     dispatch(toggleWallNode(row, col));
     dispatch(mouseIsPressed());
+    dispatch(updateStatistics(grid));
 }
 
 
@@ -120,4 +121,25 @@ export const markBacktrackNodes = (array) => {
         type: 'MARK_BACKTRACK_NODE',
         payload: { array }
     }
+}
+
+export const updateStatistics = (grid) => {
+    return { 
+        type: 'UPDATE_STATISTICS', 
+        payload: grid 
+    };
+}
+
+export const resetStatistics = (resetWall) => {
+    return { 
+        type: 'RESET_STATISTICS',
+        payload: resetWall };
+}
+
+export const showStatistics = () => {
+    return { type: 'SHOW_STATISTICS' };
+}
+
+export const hideStatistics = () => {
+    return { type: 'HIDE_STATISTICS' };
 }

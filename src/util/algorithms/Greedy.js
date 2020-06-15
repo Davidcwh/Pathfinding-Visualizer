@@ -6,11 +6,12 @@ import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export default class Greedy {
-    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure) {
+    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics) {
         this.toggleVisitedNode = toggleVisitedNode;
         this.toggleFrontierNode = toggleFrontierNode;
         this.togglePathNode = togglePathNode;
         this.setDataStructure = setDataStructure;
+        this.updateStatistics = updateStatistics;
     }
 
     async run(grid, pqueue) {
@@ -29,7 +30,7 @@ export default class Greedy {
             this.toggleVisitedNode(currentNode.row, currentNode.col);
 
             if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                await showPath(grid, this.togglePathNode);
+                await showPath(grid, this.togglePathNode, this.updateStatistics);
                 return;
             }
 
@@ -39,7 +40,7 @@ export default class Greedy {
                 if(!neighbour.isWall && !neighbour.isVisited) {
 
                     if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                        await showPath(grid, this.togglePathNode);
+                        await showPath(grid, this.togglePathNode, this.updateStatistics);
                         return;
                     }
 
@@ -48,9 +49,11 @@ export default class Greedy {
                     this.toggleFrontierNode(neighbour.row, neighbour.col);
 
                     neighbour.fCost = neighbour.hCost;
-                    pqueue = updatePqueue(pqueue, neighbour);
+                    pqueue.enqueue(neighbour);
                 }
             }
+
+            this.updateStatistics(grid);
             await sleep(40);
         }
 

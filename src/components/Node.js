@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { mouseIsNotPressed, onMouseDown } from '../actions'
 
-const Node = ({ row, col, isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, isMousePressed, onMouseDown, mouseIsNotPressed, gCost, fCost, selectedAlgorithm }) => {
+const Node = ({ row, col, isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, isMousePressed, onMouseDown, mouseIsNotPressed, fCost, selectedAlgorithm, grid }) => {
     const nodeType = isFinish
         ? 'node-finish'
         : isStart
@@ -27,9 +27,9 @@ const Node = ({ row, col, isStart, isFinish, isWall, isHead, isVisited, isFronti
     return <div 
             id={`node-${row}-${col}`}
             className={`node ${nodeType}`}
-            onMouseDown={(!isFrontier && !isVisited && !isFinish && !isStart) ? onMouseDown : () => {}}
+            onMouseDown={(!isFrontier && !isVisited && !isFinish && !isStart) ? () => onMouseDown(grid) : () => {}}
             onMouseUp={mouseIsNotPressed}
-            onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) ? onMouseDown : () => {}}>{value}</div>
+            onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) ? () => onMouseDown(grid) : () => {}}>{value}</div>
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -48,13 +48,14 @@ const mapStateToProps = (state, ownProps) => {
         hCost: node.hCost,
         gCost: node.gCost,
         fCost: node.fCost,
-        selectedAlgorithm: state.selectedAlgorithm
+        selectedAlgorithm: state.selectedAlgorithm,
+        grid: state.grid
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onMouseDown: () => onMouseDown(ownProps.row, ownProps.col, dispatch),
+        onMouseDown: (grid) => onMouseDown(ownProps.row, ownProps.col, dispatch, grid),
         mouseIsNotPressed: () => dispatch(mouseIsNotPressed()),
     }
 }

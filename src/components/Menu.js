@@ -1,11 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { showInitialBoard, runAlgorithm, stopAlgorithm, pauseAlgorithm, completeAlgorithm, toggleFrontierNode, toggleVisitedNode, togglePathNode, resetDataStructure, setDataStructure, notShowingPath, markHeadNode, unmarkHeadNode, resetBoardWithWalls, markBacktrackNodes } from '../actions';
 import BFS from '../util/algorithms/BFS';
 import DFS from '../util/algorithms/DFS';
 import AStar from '../util/algorithms/AStar';
+import Greedy from '../util/algorithms/Greedy';
 import { isAlgorithmRunning } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
+import { showInitialBoard, 
+    runAlgorithm, 
+    stopAlgorithm, 
+    pauseAlgorithm, 
+    completeAlgorithm, 
+    toggleFrontierNode, 
+    toggleVisitedNode, 
+    togglePathNode, 
+    resetDataStructure, 
+    setDataStructure, 
+    notShowingPath, 
+    markHeadNode, 
+    unmarkHeadNode, 
+    resetBoardWithWalls, 
+    markBacktrackNodes,
+    updateStatistics,
+    resetStatistics,
+    showStatistics,
+    hideStatistics } from '../actions';
 
 class Menu extends React.Component {
     constructor(props) {
@@ -31,7 +50,8 @@ class Menu extends React.Component {
                 markHeadNode,
                 unmarkHeadNode,
                 algorithmStatus,
-                markBacktrackNodes } = this.props;
+                markBacktrackNodes,
+                updateStatistics } = this.props;
 
         if(selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') {
             return;
@@ -46,22 +66,22 @@ class Menu extends React.Component {
 
         switch(selectedAlgorithm) {
             case "BFS":
-                const bfs = new BFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                const bfs = new BFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
                 await bfs.run(grid, dataStructure);
                 break;
 
             case "DFS":
-                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure);
+                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure, updateStatistics);
                 await dfs.run(grid, dataStructure);
                 break;
 
             case "ASTAR":
-                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
                 await aStar.run(grid, dataStructure);
                 break;
 
             case "GREED":
-                const greedy = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
+                const greedy = new Greedy(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
                 await greedy.run(grid, dataStructure);
                 break;
 
@@ -79,6 +99,7 @@ class Menu extends React.Component {
         this.props.notShowingPath();
         this.props.stopAlgorithm();
         this.props.resetDataStructure();
+        this.props.resetStatistics(clearWall);
 
         if(clearWall) {
             this.props.showInitialBoard();
@@ -119,7 +140,8 @@ const mapStateToProps = state => {
         dataStructure: state.dataStructure,
         selectedAlgorithm: state.selectedAlgorithm,
         algorithmStatus: state.algorithmStatus,
-        isShowingPath: state.isShowingPath
+        isShowingPath: state.isShowingPath,
+        statistics: state.statistics
     }
 }
 
@@ -139,7 +161,11 @@ const mapDispatchToProps = dispatch => {
         markHeadNode: (row, col) => dispatch(markHeadNode(row, col)),
         unmarkHeadNode: (row, col) => dispatch(unmarkHeadNode(row, col)),
         resetBoardWithWalls: () => dispatch(resetBoardWithWalls()),
-        markBacktrackNodes: (array) => dispatch(markBacktrackNodes(array))
+        markBacktrackNodes: (array) => dispatch(markBacktrackNodes(array)),
+        updateStatistics: (grid) => dispatch(updateStatistics(grid)),
+        resetStatistics: (resetWall) => dispatch(resetStatistics(resetWall)),
+        showStatistics: () => dispatch(resetStatistics()),
+        hideStatistics: () => dispatch(hideStatistics())
     }
 }
 

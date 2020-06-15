@@ -6,11 +6,12 @@ import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export default class AStar {
-    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure) {
+    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics) {
         this.toggleVisitedNode = toggleVisitedNode;
         this.toggleFrontierNode = toggleFrontierNode;
         this.togglePathNode = togglePathNode;
         this.setDataStructure = setDataStructure;
+        this.updateStatistics = updateStatistics;
     }
 
     async run(grid, pqueue) {
@@ -30,7 +31,7 @@ export default class AStar {
             this.toggleVisitedNode(currentNode.row, currentNode.col);
 
             if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                await showPath(grid, this.togglePathNode);
+                await showPath(grid, this.togglePathNode, this.updateStatistics);
                 return;
             }
 
@@ -40,19 +41,39 @@ export default class AStar {
                 if(!neighbour.isWall && !neighbour.isVisited) {
 
                     if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                        await showPath(grid, this.togglePathNode);
+                        await showPath(grid, this.togglePathNode, this.updateStatistics);
                         return;
                     }
 
-                    neighbour.isFrontier = true;
-                    neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
-                    this.toggleFrontierNode(neighbour.row, neighbour.col);
+                    // neighbour.isFrontier = true;
+                    // neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                    // this.toggleFrontierNode(neighbour.row, neighbour.col);
                     
-                    neighbour.gCost = currentNode.gCost + 1;
-                    neighbour.fCost = neighbour.gCost + neighbour.hCost;
-                    pqueue = updatePqueue(pqueue, neighbour);
+                    // neighbour.gCost = currentNode.gCost + 1;
+                    // neighbour.fCost = neighbour.gCost + neighbour.hCost;
+                    // pqueue = updatePqueue(pqueue, neighbour);
+
+                    const tempG = currentNode.gCost + 1;
+                    const tempF = tempG + neighbour.hCost;
+                    if(neighbour.gCost !== null) {
+                        if(tempF < neighbour.fCost) {
+                            neighbour.gCost = tempG;
+                            neighbour.fCost = tempF;
+                            neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                        } 
+                    } else {
+                        neighbour.gCost = tempG;
+                        neighbour.fCost = tempF;
+                        pqueue.enqueue(neighbour);
+                        neighbour.isFrontier = true;
+                        neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                    }
+
+                    this.toggleFrontierNode(neighbour.row, neighbour.col);
                 }
             }
+
+            this.updateStatistics(grid);
             await sleep(40);
         }
 
