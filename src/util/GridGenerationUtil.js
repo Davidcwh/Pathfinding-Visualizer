@@ -186,7 +186,7 @@ export function getStatistics(grid, show) {
         }
     }
 
-    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.backtrack - stats.frontier;
+    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.frontier;
     stats.show = show;
 
     return stats;
