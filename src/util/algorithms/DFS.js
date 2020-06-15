@@ -86,7 +86,7 @@ export default class DFS {
             }
 
             this.updateStatistics(grid);
-            await sleep(50);
+            await sleep(40);
         }
 
         if(isAlgorithmPaused()) {
