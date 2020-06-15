@@ -45,14 +45,6 @@ export default class AStar {
                         return;
                     }
 
-                    // neighbour.isFrontier = true;
-                    // neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
-                    // this.toggleFrontierNode(neighbour.row, neighbour.col);
-                    
-                    // neighbour.gCost = currentNode.gCost + 1;
-                    // neighbour.fCost = neighbour.gCost + neighbour.hCost;
-                    // pqueue = updatePqueue(pqueue, neighbour);
-
                     const tempG = currentNode.gCost + 1;
                     const tempF = tempG + neighbour.hCost;
                     if(neighbour.gCost !== null) {
@@ -60,6 +52,7 @@ export default class AStar {
                             neighbour.gCost = tempG;
                             neighbour.fCost = tempF;
                             neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                            pqueue = updatePqueue(pqueue, neighbour);
                         } 
                     } else {
                         neighbour.gCost = tempG;

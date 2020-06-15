@@ -1,7 +1,5 @@
 import { gridDetails, defaultStatistics } from '../constants';
 import { calculateMahattanDistance } from './AlgorithmUtil';
-import { store } from '../index';
-import { updateStatistics } from '../actions';
 
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
 
@@ -186,7 +184,7 @@ export function getStatistics(grid, show) {
         }
     }
 
-    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.backtrack - stats.frontier;
+    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.frontier;
     stats.show = show;
 
     return stats;

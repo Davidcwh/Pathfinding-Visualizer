@@ -44,12 +44,15 @@ export default class Greedy {
                         return;
                     }
 
-                    neighbour.isFrontier = true;
-                    neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
-                    this.toggleFrontierNode(neighbour.row, neighbour.col);
+                    if(!neighbour.isFrontier) {
+                        neighbour.isFrontier = true;
+                        neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                        this.toggleFrontierNode(neighbour.row, neighbour.col);
 
-                    neighbour.fCost = neighbour.hCost;
-                    pqueue.enqueue(neighbour);
+                        neighbour.fCost = neighbour.hCost;
+                        pqueue = updatePqueue(pqueue, neighbour);
+                    }
+
                 }
             }
 
