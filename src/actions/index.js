@@ -38,6 +38,10 @@ export const resetBoardWithWalls = () => {
     return { type: 'RESET_BOARD_WITH_WALLS'};
 }
 
+export const generateRandomGrid = () => {
+    return { type: 'GENERATE_RANDOM_GRID' };
+}
+
 export const pauseAlgorithm = () => {
     return { type: 'PAUSE_ALGORITHM'};
 }

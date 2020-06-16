@@ -24,7 +24,8 @@ import { showInitialBoard,
     updateStatistics,
     resetStatistics,
     showStatistics,
-    hideStatistics } from '../actions';
+    hideStatistics,
+    generateRandomGrid } from '../actions';
 
 class Menu extends React.Component {
     constructor(props) {
@@ -110,11 +111,16 @@ class Menu extends React.Component {
     }
 
     render() {
-        const { selectedAlgorithm, algorithmStatus, isShowingPath } = this.props;
+        const { selectedAlgorithm, algorithmStatus, isShowingPath, generateRandomGrid } = this.props;
 
         const runButtonClass = (selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') ? "active item" : "item";
 
+        const canGenerateRandomGrid = algorithmStatus === 'STOPPED';
+
+        const randomGridButtonClass = canGenerateRandomGrid ? "item" : "active item"; 
+
         let runButtonText = "Run";
+
         if((algorithmStatus === 'RUNNING' && isShowingPath) || algorithmStatus === 'COMPLETE') {
             runButtonText = "Complete";
         }
@@ -124,9 +130,10 @@ class Menu extends React.Component {
         }
 
         return (
-            <div className="ui four item menu">
-                <a  onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
+            <div className="ui five item menu">
+                <a  onClick={canGenerateRandomGrid ? generateRandomGrid : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
                 <SelectAlgorithmDropdown />
+                <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
                 <a onClick={() => this.clearBoard(false)} className="item">Clear Path</a>
                 <a onClick={() => this.clearBoard(true)} className="item">Clear Board</a>
             </div>
@@ -165,7 +172,8 @@ const mapDispatchToProps = dispatch => {
         updateStatistics: (grid) => dispatch(updateStatistics(grid)),
         resetStatistics: (resetWall) => dispatch(resetStatistics(resetWall)),
         showStatistics: () => dispatch(resetStatistics()),
-        hideStatistics: () => dispatch(hideStatistics())
+        hideStatistics: () => dispatch(hideStatistics()),
+        generateRandomGrid: () => dispatch(generateRandomGrid())
     }
 }
 

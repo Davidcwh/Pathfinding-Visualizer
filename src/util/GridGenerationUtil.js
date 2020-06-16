@@ -1,4 +1,4 @@
-import { gridDetails, defaultStatistics } from '../constants';
+import { gridDetails, defaultStatistics, wallRatio } from '../constants';
 import { calculateMahattanDistance } from './AlgorithmUtil';
 
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
@@ -199,4 +199,25 @@ export function resetStatistics(wall, resetWall) {
     }
 
     return stats
+}
+
+function setAsWall() {
+    return Math.random() < wallRatio;
+}
+
+export function generateRandomGrid() {
+    const newGrid = generateInitalGrid();
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const node = newGrid[r][c];
+
+            if(!node.isStart && !node.isFinish) {
+                node.isWall = setAsWall();
+            }
+            
+        }
+    }
+
+    return newGrid;
 }

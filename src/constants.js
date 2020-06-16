@@ -16,3 +16,5 @@ export const defaultStatistics = {
     frontier: 0,
     path: 0
 }
+
+export const wallRatio = 0.3;
