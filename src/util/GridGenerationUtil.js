@@ -1,7 +1,5 @@
 import { gridDetails, defaultStatistics } from '../constants';
 import { calculateMahattanDistance } from './AlgorithmUtil';
-import { store } from '../index';
-import { updateStatistics } from '../actions';
 
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
 
