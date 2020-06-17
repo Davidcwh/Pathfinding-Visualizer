@@ -6,42 +6,96 @@ import { mouseIsNotPressed,
          toggleWallNode,  
          mouseIsPressed } from '../actions'
 
-const Node = ({ row, col, 
-                isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, 
-                isMousePressed, onMouseDown, mouseIsNotPressed, 
-                fCost, 
-                selectedAlgorithm, 
-                grid,
-                dispatchMultipleActions }) => {
-    const nodeType = isFinish
-        ? 'node-finish'
-        : isStart
-        ? 'node-start'
-        : isPath
-        ? 'node-path'
-        : isWall
-        ? 'node-wall'
-        : isHead
-        ? 'node-head'
-        : isBacktrack
-        ? 'node-backtrack'
-        : isVisited
-        ? 'node-visited'
-        : isFrontier
-        ? 'node-frontier'
-        : ''
+class Node extends React.Component {
+    constructor(props) {
+        super(props);
 
-    const value = ((selectedAlgorithm === 'ASTAR' || selectedAlgorithm === 'GREED') && (fCost !== null)) ? fCost : ''
+        this.onMouseDownHandler = this.onMouseDownHandler.bind(this);
+        this.onMouseEnterHandler = this.onMouseEnterHandler.bind(this);
+    }
 
-    const onMouseDownActions = [() => toggleWallNode(row, col), 
-                                () => mouseIsPressed()]
+    onMouseDownHandler() {
+        const { 
+            row, col, 
+            isFrontier,
+            isVisited,
+            isFinish,
+            isStart,
+            dispatchMultipleActions,
+            toggleWallNode,
+            mouseIsPressed 
+        } = this.props;
 
-    return <div 
-            id={`node-${row}-${col}`}
-            className={`node ${nodeType}`}
-            onMouseDown={(!isFrontier && !isVisited && !isFinish && !isStart) ? () => dispatchMultipleActions(onMouseDownActions) : () => {}}
-            onMouseUp={mouseIsNotPressed}
-            onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) ? () => dispatchMultipleActions(onMouseDownActions) : () => {}}>{value}</div>
+        if(!isFrontier && !isVisited && !isFinish && !isStart) {
+            const onMouseDownActions = [() => toggleWallNode(), () => mouseIsPressed()];
+            dispatchMultipleActions(onMouseDownActions);
+            return;
+        }
+
+    }
+
+    onMouseEnterHandler() {
+        const { 
+            row, col, 
+            isFrontier,
+            isVisited,
+            isFinish,
+            isStart,
+            isWall,
+            dispatchMultipleActions,
+            toggleWallNode,
+            isMousePressed 
+        } = this.props;
+
+        if(isMousePressed && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) {
+            const onMouseDownActions = [() => toggleWallNode(), () => mouseIsPressed()];
+            dispatchMultipleActions(onMouseDownActions);
+            return;
+        }
+    }
+
+    render() {
+
+        const { 
+            row, col, 
+            isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, 
+            mouseIsNotPressed, 
+            fCost, 
+            selectedAlgorithm, 
+         } = this.props;
+
+
+        const nodeType = isFinish
+                        ? 'node-finish'
+                        : isStart
+                        ? 'node-start'
+                        : isPath
+                        ? 'node-path'
+                        : isWall
+                        ? 'node-wall'
+                        : isHead
+                        ? 'node-head'
+                        : isBacktrack
+                        ? 'node-backtrack'
+                        : isVisited
+                        ? 'node-visited'
+                        : isFrontier
+                        ? 'node-frontier'
+                        : ''
+
+        const value = ((selectedAlgorithm === 'ASTAR' || selectedAlgorithm === 'GREED') && (fCost !== null)) ? fCost : ''
+
+        return (
+            <div 
+                id={`node-${row}-${col}`}
+                className={`node ${nodeType}`}
+                onMouseDown={this.onMouseDownHandler}
+                onMouseUp={mouseIsNotPressed}
+                onMouseEnter={this.onMouseEnterHandler}>
+                {value}
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -60,13 +114,14 @@ const mapStateToProps = (state, ownProps) => {
         hCost: node.hCost,
         gCost: node.gCost,
         fCost: node.fCost,
-        selectedAlgorithm: state.selectedAlgorithm,
-        grid: state.board.grid
+        selectedAlgorithm: state.selectedAlgorithm
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        toggleWallNode: () => toggleWallNode(ownProps.row, ownProps.col),
+        mouseIsPressed: () => mouseIsPressed(),
         mouseIsNotPressed: () => dispatch(mouseIsNotPressed()),
         dispatchMultipleActions: (actions) => dispatchMultipleActions(actions, dispatch)
     }
