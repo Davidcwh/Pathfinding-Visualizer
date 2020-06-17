@@ -10,7 +10,8 @@ import { generateInitalGrid,
          generateUnmarkHeadGrid, 
          generateMarkBacktrackGrid, 
          getStatistics,
-         resetStatistics } from '../util/GridGenerationUtil';
+         resetStatistics,
+         generateRandomGrid } from '../util/GridGenerationUtil';
 
 const gridReducer = (state=generateInitalGrid(), action) => {
     switch(action.type) {
@@ -40,6 +41,9 @@ const gridReducer = (state=generateInitalGrid(), action) => {
 
         case 'MARK_BACKTRACK_NODE':
             return generateMarkBacktrackGrid(action.payload.array, state);
+
+        case 'GENERATE_RANDOM_GRID':
+            return generateRandomGrid();
 
         default:
             return state;
