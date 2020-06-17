@@ -4,7 +4,7 @@ import Stack from '@datastructures-js/stack';
 import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 import { showingPath, notShowingPath } from '../actions';
 
-const { TOTAL_ROW, TOTAL_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
+const { TOTAL_ROW, TOTAL_COL } = gridDetails;
 
 export function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -52,10 +52,10 @@ const isShowingPath = () => {
     return store.getState().isShowingPath;
 }
 
-export async function showPath(state, togglePathNode) {
+export async function showPath(state, togglePathNode, endRow, endCol) {
     store.dispatch(showingPath());
 
-    const finishNode = state[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const finishNode = state[endRow][endCol];
     let currentNode = finishNode;
     const stack = new Stack();
     while(currentNode !== undefined) {

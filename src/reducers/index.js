@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { defaultStatistics } from '../constants';
+import { gridDetails } from '../constants';
 import { generateInitalGrid,
          generateToggleWallGrid, 
          generateToggleFrontierGrid, 
@@ -10,7 +11,10 @@ import { generateInitalGrid,
          generateUnmarkHeadGrid, 
          generateMarkBacktrackGrid, 
          getStatistics,
-         generateRandomGrid } from '../util/GridGenerationUtil';
+         generateRandomGrid,
+         generatePlainGrid,
+         generateNewStartGrid,
+         generateNewEndGrid } from '../util/GridGenerationUtil';
 
 const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultStatistics }, action) => {
     let newGrid = state.grid;
@@ -34,11 +38,11 @@ const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultSta
             break;
 
         case 'SHOW_INITIAL_BOARD':
-            newGrid = generateInitalGrid();
+            newGrid = generatePlainGrid(state.grid, action.payload.row, action.payload.col);
             break;
 
         case 'RESET_BOARD_WITH_WALLS':
-            newGrid = generateGridWithWalls(state.grid);
+            newGrid = generateGridWithWalls(state.grid, action.payload.row, action.payload.col);
             break;
 
         case 'MARK_HEAD_NODE':
@@ -54,7 +58,15 @@ const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultSta
             break;
 
         case 'GENERATE_RANDOM_GRID':
-            newGrid = generateRandomGrid();
+            newGrid = generateRandomGrid(state.grid, action.payload.row, action.payload.col);
+            break;
+
+        case 'SET_START_NODE':
+            newGrid = generateNewStartGrid(action.payload.row, action.payload.col, state.grid);
+            break;
+
+        case 'SET_END_NODE':
+            newGrid = generateNewEndGrid(action.payload.row, action.payload.col, state.grid);
             break;
 
         default:
@@ -142,11 +154,52 @@ const isShowingPathReducer = (state=false, action) => {
     }
 }
 
+const initialMoveStartEnd = {
+    start: { row: gridDetails.START_NODE_ROW, col: gridDetails.START_NODE_COL },
+    isStartMoving: false,
+    end: { row: gridDetails.FINISH_NODE_ROW, col: gridDetails.FINISH_NODE_COL },
+    isEndMoving: false
+}
+
+const moveStartEndReducer = (state=initialMoveStartEnd, action) => {
+    switch(action.type) {
+        case 'START_NODE_MOVING':
+            return { ...state, isStartMoving: true};
+
+        case 'START_NODE_NOT_MOVING':
+            return { ...state, isStartMoving: false};
+
+        case 'END_NODE_MOVING':
+            return { ...state, isEndMoving: true};
+
+        case 'END_NODE_NOT_MOVING':
+            return { ...state, isEndMoving: false};
+
+        case 'SET_START_NODE':
+            return { ...state, 
+                    start: {
+                        row: action.payload.row,
+                        col: action.payload.col} 
+                    }
+
+        case 'SET_END_NODE':
+            return { ...state, 
+                    end: {
+                        row: action.payload.row,
+                        col: action.payload.col} 
+                    }
+
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     algorithmStatus: algorithmStatusReducer,
     selectedAlgorithm: selectAlgorithmReducer,
     isShowingPath: isShowingPathReducer,
     board: boardReducer,
     dataStructure: dataStructureReducer,
-    isMousePressed: mousePressedReducer
+    isMousePressed: mousePressedReducer,
+    moveStartEnd: moveStartEndReducer
 });

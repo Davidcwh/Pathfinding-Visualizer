@@ -39,6 +39,26 @@ export function generateInitalGrid() {
     return grid;
 }
 
+export function generatePlainGrid(currentGrid, endRow, endCol) {
+    const newGrid = currentGrid.slice();
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const node = newGrid[r][c];
+
+            const newNode = NodeFactory(r, c);
+
+            newNode.isStart = node.isStart;
+            newNode.isFinish = node.isFinish;
+            newNode.hCost = calculateMahattanDistance(r, c, endRow, endCol);
+
+            newGrid[r][c] = newNode;
+        }
+    }
+
+    return newGrid;
+}
+
 export function generateToggleWallGrid(row, col, currentGrid) {
     const newGrid = currentGrid.slice();
     const node = newGrid[row][col];
@@ -92,16 +112,21 @@ export function generateMarkPathGrid(row, col, currentGrid) {
     return newGrid;
 }
 
-export function generateGridWithWalls(currentGrid) {
-    const newGrid = generateInitalGrid();
+export function generateGridWithWalls(currentGrid, endRow, endCol) {
+    const newGrid = currentGrid.slice();
 
     for(let r = 0; r < TOTAL_ROW; r++) {
         for(let c = 0; c < TOTAL_COL; c++) {
-            const currentNode = currentGrid[r][c];
-            if(!currentNode.isFinish && !currentNode.isStart) {  
-                newGrid[r][c].isWall = currentNode.isWall;
-            }
-            
+            const node = newGrid[r][c];
+
+            const newNode = NodeFactory(r, c);
+
+            newNode.isStart = node.isStart;
+            newNode.isFinish = node.isFinish;
+            newNode.isWall = node.isWall;
+            newNode.hCost = calculateMahattanDistance(r, c, endRow, endCol);
+
+            newGrid[r][c] = newNode;
         }
     }
 
@@ -151,6 +176,63 @@ export function generateMarkBacktrackGrid(array, currentGrid) {
     return newGrid;
 }
 
+export function generateNewStartGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const node = newGrid[r][c];
+
+            let isStart = r === row && c === col;
+
+            const newNode = {
+                ...node,
+                isStart: isStart
+            }
+
+            // if(isStart) {
+            //     newNode.isWall = false;
+            //     newNode.isVisited = false;
+            //     newNode.isFrontier = false;
+            //     newNode.isPath = false;
+            // }
+
+            newGrid[r][c] = newNode;
+        }
+    }
+
+    return newGrid;
+}
+
+export function generateNewEndGrid(row, col, currentGrid) {
+    const newGrid = currentGrid.slice();
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const node = newGrid[r][c];
+
+            let isFinish = r === row && c === col;
+
+            const newNode = {
+                ...node,
+                isFinish: isFinish,
+                hCost: calculateMahattanDistance(r, c, row, col)
+            }
+
+            // if(isFinish) {
+            //     newNode.isWall = false;
+            //     newNode.isVisited = false;
+            //     newNode.isFrontier = false;
+            //     newNode.isPath = false;
+            // }
+
+            newGrid[r][c] = newNode;
+        }
+    }
+
+    return newGrid;
+}
+
 export function generateNodeKey(row, col) {
     return (row * TOTAL_ROW + col).toString();
 }
@@ -162,7 +244,7 @@ export function getStatistics(grid) {
         for(let c = 0; c < TOTAL_COL; c++) {
             const node = grid[r][c];
 
-            if(node.isWall) {
+            if(node.isWall && !node.isFinish && !node.isStart) {
                 stats.wall++;
             }
 
@@ -193,12 +275,13 @@ function setAsWall() {
     return Math.random() < wallRatio;
 }
 
-export function generateRandomGrid() {
-    const newGrid = generateInitalGrid();
+export function generateRandomGrid(currentGrid, endRow, endCol) {
+    const newGrid = generatePlainGrid(currentGrid);
 
     for(let r = 0; r < TOTAL_ROW; r++) {
         for(let c = 0; c < TOTAL_COL; c++) {
             const node = newGrid[r][c];
+            node.hCost = calculateMahattanDistance(r, c, endRow, endCol);
 
             if(!node.isStart && !node.isFinish) {
                 node.isWall = setAsWall();
