@@ -1,9 +1,18 @@
 import '../css/Node.css';
 import React from 'react';
 import { connect } from 'react-redux';
-import { mouseIsNotPressed, onMouseDown } from '../actions'
+import { mouseIsNotPressed, 
+         dispatchMultipleActions, 
+         toggleWallNode,  
+         mouseIsPressed } from '../actions'
 
-const Node = ({ row, col, isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, isMousePressed, onMouseDown, mouseIsNotPressed, fCost, selectedAlgorithm, grid }) => {
+const Node = ({ row, col, 
+                isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, 
+                isMousePressed, onMouseDown, mouseIsNotPressed, 
+                fCost, 
+                selectedAlgorithm, 
+                grid,
+                dispatchMultipleActions }) => {
     const nodeType = isFinish
         ? 'node-finish'
         : isStart
@@ -24,16 +33,19 @@ const Node = ({ row, col, isStart, isFinish, isWall, isHead, isVisited, isFronti
 
     const value = ((selectedAlgorithm === 'ASTAR' || selectedAlgorithm === 'GREED') && (fCost !== null)) ? fCost : ''
 
+    const onMouseDownActions = [() => toggleWallNode(row, col), 
+                                () => mouseIsPressed()]
+
     return <div 
             id={`node-${row}-${col}`}
             className={`node ${nodeType}`}
-            onMouseDown={(!isFrontier && !isVisited && !isFinish && !isStart) ? () => onMouseDown(grid) : () => {}}
+            onMouseDown={(!isFrontier && !isVisited && !isFinish && !isStart) ? () => dispatchMultipleActions(onMouseDownActions) : () => {}}
             onMouseUp={mouseIsNotPressed}
-            onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) ? () => onMouseDown(grid) : () => {}}>{value}</div>
+            onMouseEnter={(isMousePressed && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) ? () => dispatchMultipleActions(onMouseDownActions) : () => {}}>{value}</div>
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const node = state.grid[ownProps.row][ownProps.col];
+    const node = state.board.grid[ownProps.row][ownProps.col];
 
     return {
         isStart:  node.isStart,
@@ -49,14 +61,14 @@ const mapStateToProps = (state, ownProps) => {
         gCost: node.gCost,
         fCost: node.fCost,
         selectedAlgorithm: state.selectedAlgorithm,
-        grid: state.grid
+        grid: state.board.grid
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onMouseDown: (grid) => onMouseDown(ownProps.row, ownProps.col, dispatch, grid),
         mouseIsNotPressed: () => dispatch(mouseIsNotPressed()),
+        dispatchMultipleActions: (actions) => dispatchMultipleActions(actions, dispatch)
     }
 }
 

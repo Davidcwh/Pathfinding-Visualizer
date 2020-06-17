@@ -5,7 +5,7 @@ import Stack from '@datastructures-js/stack';
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export default class DFS {
-    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure, updateStatistics) {
+    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure) {
         this.toggleVisitedNode = toggleVisitedNode;
         this.toggleFrontierNode = toggleFrontierNode;
         this.togglePathNode = togglePathNode;
@@ -13,7 +13,6 @@ export default class DFS {
         this.unmarkHeadNode = unmarkHeadNode;
         this.markBacktrackNodes = markBacktrackNodes;
         this.setDataStructure = setDataStructure;
-        this.updateStatistics = updateStatistics;
     }
 
     async run(grid, stacks) {
@@ -57,7 +56,7 @@ export default class DFS {
             }
 
             if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                await showPath(grid, this.togglePathNode, this.updateStatistics);
+                await showPath(grid, this.togglePathNode);
                 return;
             }
 
@@ -75,9 +74,6 @@ export default class DFS {
             const validNeighbours = neighbours.filter(neighbour => !neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier)
 
             if(validNeighbours.length === 0) {
-                // console.log(`deadend: ${currentNode.row}, ${currentNode.col}`)
-                // console.log(`unvisited: ${unvisitedStack.toArray().map(i => `(${i.row}, ${i.col}) `)}`)
-                // console.log(`visited: ${visitedStack.toArray().map(i => `(${i.row}, ${i.col}) `)}`)
                 currentNode.isHead = false;
                 this.unmarkHeadNode(currentNode.row, currentNode.col);
                 await sleep(20);
@@ -85,7 +81,6 @@ export default class DFS {
                
             }
 
-            this.updateStatistics(grid);
             await sleep(40);
         }
 
@@ -109,7 +104,6 @@ export default class DFS {
             let neighbours = getNodeNeighbours(grid, visitedNode);
             neighbours = neighbours.filter(neighbour => !neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier)
             if(this.contains(neighbours, unvisitedStack.peek())) {
-                // console.log(`backtrack ${unvisitedStack.peek().row}, ${unvisitedStack.peek().col}`)
                 visitedStack.push(visitedNode);
                 this.markBacktrackNodes(backtrackNodes);
                 return;

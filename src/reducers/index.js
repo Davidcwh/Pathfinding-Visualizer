@@ -10,44 +10,59 @@ import { generateInitalGrid,
          generateUnmarkHeadGrid, 
          generateMarkBacktrackGrid, 
          getStatistics,
-         resetStatistics,
          generateRandomGrid } from '../util/GridGenerationUtil';
 
-const gridReducer = (state=generateInitalGrid(), action) => {
+const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultStatistics }, action) => {
+    let newGrid = state.grid;
+    let newStatistics = state.statistics;
+
     switch(action.type) {
         case 'TOOGLE_WALL_NODE':
-            return generateToggleWallGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateToggleWallGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'TOGGLE_FRONTIER_NDOE':
-            return generateToggleFrontierGrid(action.payload.row, action.payload.col, state);
-
+            newGrid = generateToggleFrontierGrid(action.payload.row, action.payload.col, state.grid);
+            break;
+            
         case 'TOGGLE_VISITED_NODE':
-            return generateMarkVisitedGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateMarkVisitedGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'TOGGLE_PATH_NODE':
-            return generateMarkPathGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateMarkPathGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'SHOW_INITIAL_BOARD':
-            return generateInitalGrid();
+            newGrid = generateInitalGrid();
+            break;
 
         case 'RESET_BOARD_WITH_WALLS':
-            return generateGridWithWalls(state);
+            newGrid = generateGridWithWalls(state.grid);
+            break;
 
         case 'MARK_HEAD_NODE':
-            return generateMarkHeadGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateMarkHeadGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'UNMARK_HEAD_NODE':
-            return generateUnmarkHeadGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateUnmarkHeadGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'MARK_BACKTRACK_NODE':
-            return generateMarkBacktrackGrid(action.payload.array, state);
+            newGrid = generateMarkBacktrackGrid(action.payload.array, state.grid);
+            break;
 
         case 'GENERATE_RANDOM_GRID':
-            return generateRandomGrid();
+            newGrid = generateRandomGrid();
+            break;
 
         default:
-            return state;
+            break;
     }
+
+    newStatistics = getStatistics(newGrid);
+    return { grid: newGrid, statistics: newStatistics };
 }
 
 const dataStructureReducer = (state=null, action) => {
@@ -127,31 +142,11 @@ const isShowingPathReducer = (state=false, action) => {
     }
 }
 
-const statisticsReducer = (state=defaultStatistics, action) => {
-    switch(action.type) {
-        case 'UPDATE_STATISTICS':
-            return getStatistics(action.payload, state.show);
-
-        case 'RESET_STATISTICS':
-            return resetStatistics(state.wall, action.payload);
-
-        case 'SHOW_STATISTICS':
-            return { ...defaultStatistics, show: true };
-
-        case 'HIDE_STATISTICS':
-            return { ...defaultStatistics, show: false }
-        
-        default:
-            return state;
-    }
-}
-
 export default combineReducers({
-    statistics: statisticsReducer,
     algorithmStatus: algorithmStatusReducer,
     selectedAlgorithm: selectAlgorithmReducer,
     isShowingPath: isShowingPathReducer,
-    grid: gridReducer,
+    board: boardReducer,
     dataStructure: dataStructureReducer,
     isMousePressed: mousePressedReducer
 });

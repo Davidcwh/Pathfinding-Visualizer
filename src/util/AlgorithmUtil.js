@@ -52,7 +52,7 @@ const isShowingPath = () => {
     return store.getState().isShowingPath;
 }
 
-export async function showPath(state, togglePathNode, updateStatistics) {
+export async function showPath(state, togglePathNode) {
     store.dispatch(showingPath());
 
     const finishNode = state[FINISH_NODE_ROW][FINISH_NODE_COL];
@@ -74,7 +74,6 @@ export async function showPath(state, togglePathNode, updateStatistics) {
 
         let node = stack.pop();
         togglePathNode(node.row, node.col);
-        updateStatistics(state);
         await sleep(20);
     }
 

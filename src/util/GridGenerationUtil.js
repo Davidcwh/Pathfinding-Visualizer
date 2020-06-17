@@ -155,7 +155,7 @@ export function generateNodeKey(row, col) {
     return (row * TOTAL_ROW + col).toString();
 }
 
-export function getStatistics(grid, show) {
+export function getStatistics(grid) {
     const stats = { ...defaultStatistics };
 
     for(let r = 0; r < TOTAL_ROW; r++) {
@@ -185,20 +185,8 @@ export function getStatistics(grid, show) {
     }
 
     stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.frontier;
-    stats.show = show;
 
     return stats;
-}
-
-export function resetStatistics(wall, resetWall) {
-    const stats = { ...defaultStatistics };
-
-    if(!resetWall) {
-        stats.wall = wall;
-        stats.unvisited = stats.unvisited - wall;
-    }
-
-    return stats
 }
 
 function setAsWall() {

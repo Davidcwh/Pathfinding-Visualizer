@@ -8,7 +8,6 @@ export const gridDetails = {
 }
 
 export const defaultStatistics = {
-    show: false,
     wall: 0,
     unvisited: gridDetails.TOTAL_ROW * gridDetails.TOTAL_COL - 2,
     visited: 0,

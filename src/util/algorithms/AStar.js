@@ -6,12 +6,11 @@ import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
 
 export default class AStar {
-    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics) {
+    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure) {
         this.toggleVisitedNode = toggleVisitedNode;
         this.toggleFrontierNode = toggleFrontierNode;
         this.togglePathNode = togglePathNode;
         this.setDataStructure = setDataStructure;
-        this.updateStatistics = updateStatistics;
     }
 
     async run(grid, pqueue) {
@@ -31,7 +30,7 @@ export default class AStar {
             this.toggleVisitedNode(currentNode.row, currentNode.col);
 
             if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                await showPath(grid, this.togglePathNode, this.updateStatistics);
+                await showPath(grid, this.togglePathNode);
                 return;
             }
 
@@ -41,7 +40,7 @@ export default class AStar {
                 if(!neighbour.isWall && !neighbour.isVisited) {
 
                     if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                        await showPath(grid, this.togglePathNode, this.updateStatistics);
+                        await showPath(grid, this.togglePathNode);
                         return;
                     }
 
@@ -66,7 +65,6 @@ export default class AStar {
                 }
             }
 
-            this.updateStatistics(grid);
             await sleep(40);
         }
 

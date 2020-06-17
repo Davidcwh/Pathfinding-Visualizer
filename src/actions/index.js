@@ -1,4 +1,4 @@
-const toggleWallNode = (row, col) => {
+export const toggleWallNode = (row, col) => {
     return {
         type: 'TOOGLE_WALL_NODE',
         payload: {
@@ -7,7 +7,7 @@ const toggleWallNode = (row, col) => {
     }
 }
 
-const mouseIsPressed = () => {
+export const mouseIsPressed = () => {
     return { type: 'PRESSED'};
 }
 
@@ -15,12 +15,11 @@ export const mouseIsNotPressed = () => {
     return { type: 'NOT_PRESSED'};
 }
 
-export const onMouseDown = (row, col, dispatch, grid) => {
-    dispatch(toggleWallNode(row, col));
-    dispatch(mouseIsPressed());
-    dispatch(updateStatistics(grid));
+export const dispatchMultipleActions = (actions, dispatch) => {
+    for(let i = 0; i < actions.length; i++) {
+        dispatch(actions[i]());
+    }
 }
-
 
 export const runAlgorithm = () => {
     return { type: 'RUN_ALGORITHM'};
@@ -125,25 +124,4 @@ export const markBacktrackNodes = (array) => {
         type: 'MARK_BACKTRACK_NODE',
         payload: { array }
     }
-}
-
-export const updateStatistics = (grid) => {
-    return { 
-        type: 'UPDATE_STATISTICS', 
-        payload: grid 
-    };
-}
-
-export const resetStatistics = (resetWall) => {
-    return { 
-        type: 'RESET_STATISTICS',
-        payload: resetWall };
-}
-
-export const showStatistics = () => {
-    return { type: 'SHOW_STATISTICS' };
-}
-
-export const hideStatistics = () => {
-    return { type: 'HIDE_STATISTICS' };
 }

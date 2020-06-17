@@ -7,25 +7,22 @@ import Greedy from '../util/algorithms/Greedy';
 import { isAlgorithmRunning } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 import { showInitialBoard, 
-    runAlgorithm, 
-    stopAlgorithm, 
-    pauseAlgorithm, 
-    completeAlgorithm, 
-    toggleFrontierNode, 
-    toggleVisitedNode, 
-    togglePathNode, 
-    resetDataStructure, 
-    setDataStructure, 
-    notShowingPath, 
-    markHeadNode, 
-    unmarkHeadNode, 
-    resetBoardWithWalls, 
-    markBacktrackNodes,
-    updateStatistics,
-    resetStatistics,
-    showStatistics,
-    hideStatistics,
-    generateRandomGrid } from '../actions';
+        runAlgorithm, 
+        stopAlgorithm, 
+        pauseAlgorithm, 
+        completeAlgorithm, 
+        toggleFrontierNode, 
+        toggleVisitedNode, 
+        togglePathNode, 
+        resetDataStructure, 
+        setDataStructure, 
+        notShowingPath, 
+        markHeadNode, 
+        unmarkHeadNode, 
+        resetBoardWithWalls, 
+        markBacktrackNodes,
+        generateRandomGrid,
+        dispatchMultipleActions } from '../actions';
 
 class Menu extends React.Component {
     constructor(props) {
@@ -33,7 +30,6 @@ class Menu extends React.Component {
 
         this.runSelectedAlgorithm = this.runSelectedAlgorithm.bind(this);
         this.clearBoard = this.clearBoard.bind(this);
-
     }
 
     async runSelectedAlgorithm() {
@@ -51,8 +47,7 @@ class Menu extends React.Component {
                 markHeadNode,
                 unmarkHeadNode,
                 algorithmStatus,
-                markBacktrackNodes,
-                updateStatistics } = this.props;
+                markBacktrackNodes } = this.props;
 
         if(selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') {
             return;
@@ -67,22 +62,22 @@ class Menu extends React.Component {
 
         switch(selectedAlgorithm) {
             case "BFS":
-                const bfs = new BFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
+                const bfs = new BFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
                 await bfs.run(grid, dataStructure);
                 break;
 
             case "DFS":
-                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure, updateStatistics);
+                const dfs = new DFS(toggleVisitedNode, toggleFrontierNode, togglePathNode, markHeadNode, unmarkHeadNode, markBacktrackNodes, setDataStructure);
                 await dfs.run(grid, dataStructure);
                 break;
 
             case "ASTAR":
-                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
+                const aStar = new AStar(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
                 await aStar.run(grid, dataStructure);
                 break;
 
             case "GREED":
-                const greedy = new Greedy(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics);
+                const greedy = new Greedy(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure);
                 await greedy.run(grid, dataStructure);
                 break;
 
@@ -97,17 +92,24 @@ class Menu extends React.Component {
     }
 
     clearBoard(clearWall) {
-        this.props.notShowingPath();
-        this.props.stopAlgorithm();
-        this.props.resetDataStructure();
-        this.props.resetStatistics(clearWall);
+        const { notShowingPath,
+                stopAlgorithm,
+                resetDataStructure,
+                showInitialBoard,
+                resetBoardWithWalls,
+                dispatchMultipleActions} = this.props;
+
+        const clearBoardActions = [notShowingPath,
+                                   stopAlgorithm,
+                                   resetDataStructure];
 
         if(clearWall) {
-            this.props.showInitialBoard();
+            clearBoardActions.push(showInitialBoard);
         } else {
-            this.props.resetBoardWithWalls();
+            clearBoardActions.push(resetBoardWithWalls);
         }
-        
+
+        dispatchMultipleActions(clearBoardActions);
     }
 
     render() {
@@ -131,7 +133,7 @@ class Menu extends React.Component {
 
         return (
             <div className="ui five item menu">
-                <a  onClick={canGenerateRandomGrid ? generateRandomGrid : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
+                <a  onClick={canGenerateRandomGrid ? () => generateRandomGrid() : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
                 <SelectAlgorithmDropdown />
                 <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
                 <a onClick={() => this.clearBoard(false)} className="item">Clear Path</a>
@@ -143,12 +145,12 @@ class Menu extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        grid: state.grid,
+        grid: state.board.grid,
         dataStructure: state.dataStructure,
         selectedAlgorithm: state.selectedAlgorithm,
         algorithmStatus: state.algorithmStatus,
         isShowingPath: state.isShowingPath,
-        statistics: state.statistics
+        statistics: state.board.statistics
     }
 }
 
@@ -169,11 +171,8 @@ const mapDispatchToProps = dispatch => {
         unmarkHeadNode: (row, col) => dispatch(unmarkHeadNode(row, col)),
         resetBoardWithWalls: () => dispatch(resetBoardWithWalls()),
         markBacktrackNodes: (array) => dispatch(markBacktrackNodes(array)),
-        updateStatistics: (grid) => dispatch(updateStatistics(grid)),
-        resetStatistics: (resetWall) => dispatch(resetStatistics(resetWall)),
-        showStatistics: () => dispatch(resetStatistics()),
-        hideStatistics: () => dispatch(hideStatistics()),
-        generateRandomGrid: () => dispatch(generateRandomGrid())
+        generateRandomGrid: () => dispatch(generateRandomGrid()),
+        dispatchMultipleActions: (actions) => dispatchMultipleActions(actions, dispatch)
     }
 }
 

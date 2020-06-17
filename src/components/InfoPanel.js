@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateStatistics, resetStatistics } from '../actions';
 
 class InfoPanel extends React.Component {
     render() {
 
-        const { show,
-                unvisited,
+        const { unvisited,
                 visited,
                 wall,
                 backtrack,
@@ -85,20 +83,13 @@ class InfoPanel extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        grid: state.grid,
+        grid: state.board.grid,
         dataStructure: state.dataStructure,
         selectedAlgorithm: state.selectedAlgorithm,
         algorithmStatus: state.algorithmStatus,
         isShowingPath: state.isShowingPath,
-        statistics: state.statistics
+        statistics: state.board.statistics
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        updateStatistics: (grid) => dispatch(updateStatistics(grid)),
-        resetStatistics: () => dispatch(resetStatistics())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(InfoPanel);
+export default connect(mapStateToProps)(InfoPanel);
