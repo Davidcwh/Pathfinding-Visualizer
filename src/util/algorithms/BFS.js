@@ -1,23 +1,19 @@
-import { gridDetails } from '../../constants';
 import { getNodeNeighbours, sleep , isAlgorithmRunning, isAlgorithmPaused, isAlgorithmStopped, showPath} from '../AlgorithmUtil';
-
 import Queue from 'queue-fifo';
-
-const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL } = gridDetails;
   
 export default class BFS {
-    constructor(toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure, updateStatistics) {
+    constructor(startNode, toggleVisitedNode, toggleFrontierNode, togglePathNode, setDataStructure) {
+        this.startNode = startNode;
         this.toggleVisitedNode = toggleVisitedNode;
         this.toggleFrontierNode = toggleFrontierNode;
         this.togglePathNode = togglePathNode;
         this.setDataStructure = setDataStructure;
-        this.updateStatistics = updateStatistics;
     }
 
     async run(grid, queue) {
         if(queue === null) {
             queue = new Queue();
-            const startNode = grid[START_NODE_ROW][START_NODE_COL];
+            const startNode = grid[this.startNode.row][this.startNode.col];
             queue.enqueue(startNode);
         }
 
@@ -27,28 +23,25 @@ export default class BFS {
             currentNode.isVisited = true;
             this.toggleVisitedNode(currentNode.row, currentNode.col);
 
-            if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                await showPath(grid, this.togglePathNode, this.updateStatistics);
+            if(currentNode.isFinish) {
+                await showPath(grid, this.togglePathNode, currentNode.row, currentNode.col);
                 return;
             }
 
             const neighbours = getNodeNeighbours(grid, currentNode);
             for(let i = 0; i < neighbours.length; i++) {
                 const neighbour = neighbours[i];
+                // if(neighbour.isFinish) {
+                //     await showPath(grid, this.togglePathNode, currentNode.row, currentNode.col);
+                //     return;
+                // }
                 if(!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) {
-
-                    if(currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL) {
-                        await showPath(grid, this.togglePathNode, this.updateStatistics);
-                        return;
-                    }
-
                     neighbour.isFrontier = true;
                     neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
                     this.toggleFrontierNode(neighbour.row, neighbour.col);
                     queue.enqueue(neighbour);
                 }
             }
-            this.updateStatistics(grid);
             await sleep(0);
         }
 

@@ -1,4 +1,4 @@
-const toggleWallNode = (row, col) => {
+export const toggleWallNode = (row, col) => {
     return {
         type: 'TOOGLE_WALL_NODE',
         payload: {
@@ -7,7 +7,7 @@ const toggleWallNode = (row, col) => {
     }
 }
 
-const mouseIsPressed = () => {
+export const mouseIsPressed = () => {
     return { type: 'PRESSED'};
 }
 
@@ -15,12 +15,11 @@ export const mouseIsNotPressed = () => {
     return { type: 'NOT_PRESSED'};
 }
 
-export const onMouseDown = (row, col, dispatch, grid) => {
-    dispatch(toggleWallNode(row, col));
-    dispatch(mouseIsPressed());
-    dispatch(updateStatistics(grid));
+export const dispatchMultipleActions = (actions) => {
+    for(let i = 0; i < actions.length; i++) {
+        actions[i]();
+    }
 }
-
 
 export const runAlgorithm = () => {
     return { type: 'RUN_ALGORITHM'};
@@ -30,16 +29,34 @@ export const stopAlgorithm = () => {
     return { type: 'STOP_ALGORITHM'};
 }
 
-export const showInitialBoard = () => {
-    return { type: 'SHOW_INITIAL_BOARD'};
+export const showInitialBoard = (endNode) => {
+    return { 
+        type: 'SHOW_INITIAL_BOARD',
+        payload: {
+            row: endNode.row,
+            col: endNode.col
+        }
+    };
 }
 
-export const resetBoardWithWalls = () => {
-    return { type: 'RESET_BOARD_WITH_WALLS'};
+export const resetBoardWithWalls = (endNode) => {
+    return { 
+        type: 'RESET_BOARD_WITH_WALLS',
+        payload: {
+            row: endNode.row,
+            col: endNode.col
+        }
+    };
 }
 
-export const generateRandomGrid = () => {
-    return { type: 'GENERATE_RANDOM_GRID' };
+export const generateRandomGrid = (endNode) => {
+    return { 
+        type: 'GENERATE_RANDOM_GRID',
+        payload: {
+            row: endNode.row,
+            col: endNode.col
+        }
+    };
 }
 
 export const pauseAlgorithm = () => {
@@ -127,23 +144,32 @@ export const markBacktrackNodes = (array) => {
     }
 }
 
-export const updateStatistics = (grid) => {
-    return { 
-        type: 'UPDATE_STATISTICS', 
-        payload: grid 
-    };
+export const startNodeMoving = (isMoving) => {
+    return { type: (isMoving ? 'START_NODE_MOVING' : 'START_NODE_NOT_MOVING') };
 }
 
-export const resetStatistics = (resetWall) => {
-    return { 
-        type: 'RESET_STATISTICS',
-        payload: resetWall };
+export const startNodeNotMoving = () => {
+    return { type: 'START_NODE_NOT_MOVING' };
 }
 
-export const showStatistics = () => {
-    return { type: 'SHOW_STATISTICS' };
+export const endNodeMoving = (isMoving) => {
+    return { type: (isMoving? 'END_NODE_MOVING' : 'END_NODE_NOT_MOVING') };
 }
 
-export const hideStatistics = () => {
-    return { type: 'HIDE_STATISTICS' };
+export const endNodeNotMoving = () => {
+    return { type: 'END_NODE_NOT_MOVING' };
+}
+
+export const setStartNode = (row, col) => {
+    return {
+        type: 'SET_START_NODE',
+        payload: { row, col }
+    }
+}
+
+export const setEndNode = (row, col) => {
+    return {
+        type: 'SET_END_NODE',
+        payload: { row, col }
+    }
 }

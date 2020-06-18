@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { defaultStatistics } from '../constants';
+import { gridDetails } from '../constants';
 import { generateInitalGrid,
          generateToggleWallGrid, 
          generateToggleFrontierGrid, 
@@ -10,44 +11,70 @@ import { generateInitalGrid,
          generateUnmarkHeadGrid, 
          generateMarkBacktrackGrid, 
          getStatistics,
-         resetStatistics,
-         generateRandomGrid } from '../util/GridGenerationUtil';
+         generateRandomGrid,
+         generatePlainGrid,
+         generateNewStartGrid,
+         generateNewEndGrid } from '../util/GridGenerationUtil';
 
-const gridReducer = (state=generateInitalGrid(), action) => {
+const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultStatistics }, action) => {
+    let newGrid = state.grid;
+    let newStatistics = state.statistics;
+
     switch(action.type) {
         case 'TOOGLE_WALL_NODE':
-            return generateToggleWallGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateToggleWallGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'TOGGLE_FRONTIER_NDOE':
-            return generateToggleFrontierGrid(action.payload.row, action.payload.col, state);
-
+            newGrid = generateToggleFrontierGrid(action.payload.row, action.payload.col, state.grid);
+            break;
+            
         case 'TOGGLE_VISITED_NODE':
-            return generateMarkVisitedGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateMarkVisitedGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'TOGGLE_PATH_NODE':
-            return generateMarkPathGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateMarkPathGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'SHOW_INITIAL_BOARD':
-            return generateInitalGrid();
+            newGrid = generatePlainGrid(state.grid, action.payload.row, action.payload.col);
+            break;
 
         case 'RESET_BOARD_WITH_WALLS':
-            return generateGridWithWalls(state);
+            newGrid = generateGridWithWalls(state.grid, action.payload.row, action.payload.col);
+            break;
 
         case 'MARK_HEAD_NODE':
-            return generateMarkHeadGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateMarkHeadGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'UNMARK_HEAD_NODE':
-            return generateUnmarkHeadGrid(action.payload.row, action.payload.col, state);
+            newGrid = generateUnmarkHeadGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         case 'MARK_BACKTRACK_NODE':
-            return generateMarkBacktrackGrid(action.payload.array, state);
+            newGrid = generateMarkBacktrackGrid(action.payload.array, state.grid);
+            break;
 
         case 'GENERATE_RANDOM_GRID':
-            return generateRandomGrid();
+            newGrid = generateRandomGrid(state.grid, action.payload.row, action.payload.col);
+            break;
+
+        case 'SET_START_NODE':
+            newGrid = generateNewStartGrid(action.payload.row, action.payload.col, state.grid);
+            break;
+
+        case 'SET_END_NODE':
+            newGrid = generateNewEndGrid(action.payload.row, action.payload.col, state.grid);
+            break;
 
         default:
-            return state;
+            break;
     }
+
+    newStatistics = getStatistics(newGrid);
+    return { grid: newGrid, statistics: newStatistics };
 }
 
 const dataStructureReducer = (state=null, action) => {
@@ -127,31 +154,52 @@ const isShowingPathReducer = (state=false, action) => {
     }
 }
 
-const statisticsReducer = (state=defaultStatistics, action) => {
+const initialMoveStartEnd = {
+    start: { row: gridDetails.START_NODE_ROW, col: gridDetails.START_NODE_COL },
+    isStartMoving: false,
+    end: { row: gridDetails.FINISH_NODE_ROW, col: gridDetails.FINISH_NODE_COL },
+    isEndMoving: false
+}
+
+const moveStartEndReducer = (state=initialMoveStartEnd, action) => {
     switch(action.type) {
-        case 'UPDATE_STATISTICS':
-            return getStatistics(action.payload, state.show);
+        case 'START_NODE_MOVING':
+            return { ...state, isStartMoving: true};
 
-        case 'RESET_STATISTICS':
-            return resetStatistics(state.wall, action.payload);
+        case 'START_NODE_NOT_MOVING':
+            return { ...state, isStartMoving: false};
 
-        case 'SHOW_STATISTICS':
-            return { ...defaultStatistics, show: true };
+        case 'END_NODE_MOVING':
+            return { ...state, isEndMoving: true};
 
-        case 'HIDE_STATISTICS':
-            return { ...defaultStatistics, show: false }
-        
+        case 'END_NODE_NOT_MOVING':
+            return { ...state, isEndMoving: false};
+
+        case 'SET_START_NODE':
+            return { ...state, 
+                    start: {
+                        row: action.payload.row,
+                        col: action.payload.col} 
+                    }
+
+        case 'SET_END_NODE':
+            return { ...state, 
+                    end: {
+                        row: action.payload.row,
+                        col: action.payload.col} 
+                    }
+
         default:
             return state;
     }
 }
 
 export default combineReducers({
-    statistics: statisticsReducer,
     algorithmStatus: algorithmStatusReducer,
     selectedAlgorithm: selectAlgorithmReducer,
     isShowingPath: isShowingPathReducer,
-    grid: gridReducer,
+    board: boardReducer,
     dataStructure: dataStructureReducer,
-    isMousePressed: mousePressedReducer
+    isMousePressed: mousePressedReducer,
+    moveStartEnd: moveStartEndReducer
 });

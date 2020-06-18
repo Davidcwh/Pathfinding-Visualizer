@@ -2,12 +2,12 @@ import React from 'react';
 import Node from './Node';
 import { connect } from 'react-redux';
 import '../css/Grid.css';
-import { generateNodeKey } from '../util/GridGenerationUtil'
+import { generateNodeKey } from '../util/GridGenerationUtil';
 
 class Grid extends React.Component {
 
     render() {
-        const {grid} = this.props;
+        const { grid } = this.props;
 
         return (
             <div className="grid">
@@ -37,7 +37,7 @@ class Grid extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        grid: state.grid,
+        grid: state.board.grid,
     }
 }
 
