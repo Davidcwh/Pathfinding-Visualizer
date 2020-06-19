@@ -4,25 +4,28 @@ import BFS from '../util/algorithms/BFS';
 import DFS from '../util/algorithms/DFS';
 import AStar from '../util/algorithms/AStar';
 import Greedy from '../util/algorithms/Greedy';
-import { isAlgorithmRunning } from '../util/AlgorithmUtil'
+import { isAlgorithmRunning, isAlgorithmStopped } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
-import { showInitialBoard, 
-        runAlgorithm, 
-        stopAlgorithm, 
-        pauseAlgorithm, 
-        completeAlgorithm, 
-        toggleFrontierNode, 
-        toggleVisitedNode, 
-        togglePathNode, 
-        resetDataStructure, 
-        setDataStructure, 
-        notShowingPath, 
-        markHeadNode, 
-        unmarkHeadNode, 
-        resetBoardWithWalls, 
-        markBacktrackNodes,
-        generateRandomGrid,
-        dispatchMultipleActions } from '../actions';
+import { 
+    showInitialBoard, 
+    runAlgorithm, 
+    stopAlgorithm, 
+    pauseAlgorithm, 
+    completeAlgorithm, 
+    toggleFrontierNode, 
+    toggleVisitedNode, 
+    togglePathNode, 
+    resetDataStructure, 
+    setDataStructure, 
+    notShowingPath, 
+    markHeadNode, 
+    unmarkHeadNode, 
+    resetBoardWithWalls, 
+    markBacktrackNodes,
+    generateRandomGrid,
+    dispatchMultipleActions,
+    calculateHCost
+} from '../actions';
 
 class Menu extends React.Component {
     constructor(props) {
@@ -49,7 +52,9 @@ class Menu extends React.Component {
             unmarkHeadNode,
             algorithmStatus,
             markBacktrackNodes,
-            startNode
+            startNode,
+            endNode,
+            calculateHCost
         } = this.props;
 
         if(selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') {
@@ -59,6 +64,10 @@ class Menu extends React.Component {
         if(isAlgorithmRunning()) {
             pauseAlgorithm();
             return;
+        }
+
+        if(isAlgorithmStopped()) {
+            calculateHCost(endNode);
         }
 
         runAlgorithm();
@@ -101,8 +110,7 @@ class Menu extends React.Component {
             resetDataStructure,
             showInitialBoard,
             resetBoardWithWalls,
-            dispatchMultipleActions,
-            endNode
+            dispatchMultipleActions
         } = this.props;
 
         const clearBoardActions = [notShowingPath,
@@ -110,16 +118,16 @@ class Menu extends React.Component {
                                    resetDataStructure];
 
         if(clearWall) {
-            clearBoardActions.push(() => showInitialBoard(endNode));
+            clearBoardActions.push(showInitialBoard);
         } else {
-            clearBoardActions.push(() => resetBoardWithWalls(endNode));
+            clearBoardActions.push(resetBoardWithWalls);
         }
 
         dispatchMultipleActions(clearBoardActions);
     }
 
     render() {
-        const { selectedAlgorithm, algorithmStatus, isShowingPath, generateRandomGrid, endNode } = this.props;
+        const { selectedAlgorithm, algorithmStatus, isShowingPath, generateRandomGrid } = this.props;
 
         const runButtonClass = (selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') ? "active item" : "item";
 
@@ -139,7 +147,7 @@ class Menu extends React.Component {
 
         return (
             <div className="ui five item menu">
-                <a  onClick={canGenerateRandomGrid ? () => generateRandomGrid(endNode) : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
+                <a  onClick={canGenerateRandomGrid ? generateRandomGrid : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
                 <SelectAlgorithmDropdown />
                 <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
                 <a onClick={() => this.clearBoard(false)} className="item">Clear Path</a>
@@ -179,8 +187,9 @@ const mapDispatchToProps = dispatch => {
         unmarkHeadNode: (row, col) => dispatch(unmarkHeadNode(row, col)),
         resetBoardWithWalls: (endNode) => dispatch(resetBoardWithWalls(endNode)),
         markBacktrackNodes: (array) => dispatch(markBacktrackNodes(array)),
-        generateRandomGrid: (endNode) => dispatch(generateRandomGrid(endNode)),
-        dispatchMultipleActions: (actions) => dispatchMultipleActions(actions)
+        generateRandomGrid: () => dispatch(generateRandomGrid()),
+        dispatchMultipleActions: (actions) => dispatchMultipleActions(actions),
+        calculateHCost: (endNode) => dispatch(calculateHCost(endNode))
     }
 }
 

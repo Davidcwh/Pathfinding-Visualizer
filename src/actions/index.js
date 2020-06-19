@@ -29,34 +29,16 @@ export const stopAlgorithm = () => {
     return { type: 'STOP_ALGORITHM'};
 }
 
-export const showInitialBoard = (endNode) => {
-    return { 
-        type: 'SHOW_INITIAL_BOARD',
-        payload: {
-            row: endNode.row,
-            col: endNode.col
-        }
-    };
+export const showInitialBoard = () => {
+    return { type: 'SHOW_INITIAL_BOARD' };
 }
 
-export const resetBoardWithWalls = (endNode) => {
-    return { 
-        type: 'RESET_BOARD_WITH_WALLS',
-        payload: {
-            row: endNode.row,
-            col: endNode.col
-        }
-    };
+export const resetBoardWithWalls = () => {
+    return { type: 'RESET_BOARD_WITH_WALLS' };
 }
 
-export const generateRandomGrid = (endNode) => {
-    return { 
-        type: 'GENERATE_RANDOM_GRID',
-        payload: {
-            row: endNode.row,
-            col: endNode.col
-        }
-    };
+export const generateRandomGrid = (endNde) => {
+    return { type: 'GENERATE_RANDOM_GRID' };
 }
 
 export const pauseAlgorithm = () => {
@@ -172,4 +154,14 @@ export const setEndNode = (row, col) => {
         type: 'SET_END_NODE',
         payload: { row, col }
     }
+}
+
+export const calculateHCost = (endNode) => {
+    return { 
+        type: 'CALCULATE_HCOST',
+        payload: {
+            row: endNode.row,
+            col: endNode.col
+        }
+    };
 }

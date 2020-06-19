@@ -17,7 +17,7 @@ function NodeFactory(row, col) {
         isBacktrack: false,
         previousNode: null,
         isPath: false,
-        hCost: calculateMahattanDistance(row, col, FINISH_NODE_ROW, FINISH_NODE_COL),
+        hCost: null,
         gCost: null,
         fCost: null
       };
@@ -39,7 +39,7 @@ export function generateInitalGrid() {
     return grid;
 }
 
-export function generatePlainGrid(currentGrid, endRow, endCol) {
+export function generatePlainGrid(currentGrid) {
     const newGrid = currentGrid.slice();
 
     for(let r = 0; r < TOTAL_ROW; r++) {
@@ -50,7 +50,6 @@ export function generatePlainGrid(currentGrid, endRow, endCol) {
 
             newNode.isStart = node.isStart;
             newNode.isFinish = node.isFinish;
-            newNode.hCost = calculateMahattanDistance(r, c, endRow, endCol);
 
             newGrid[r][c] = newNode;
         }
@@ -112,7 +111,7 @@ export function generateMarkPathGrid(row, col, currentGrid) {
     return newGrid;
 }
 
-export function generateGridWithWalls(currentGrid, endRow, endCol) {
+export function generateGridWithWalls(currentGrid) {
     const newGrid = currentGrid.slice();
 
     for(let r = 0; r < TOTAL_ROW; r++) {
@@ -124,7 +123,7 @@ export function generateGridWithWalls(currentGrid, endRow, endCol) {
             newNode.isStart = node.isStart;
             newNode.isFinish = node.isFinish;
             newNode.isWall = node.isWall;
-            newNode.hCost = calculateMahattanDistance(r, c, endRow, endCol);
+            newNode.hCost = null;
 
             newGrid[r][c] = newNode;
         }
@@ -190,13 +189,6 @@ export function generateNewStartGrid(row, col, currentGrid) {
                 isStart: isStart
             }
 
-            // if(isStart) {
-            //     newNode.isWall = false;
-            //     newNode.isVisited = false;
-            //     newNode.isFrontier = false;
-            //     newNode.isPath = false;
-            // }
-
             newGrid[r][c] = newNode;
         }
     }
@@ -215,16 +207,8 @@ export function generateNewEndGrid(row, col, currentGrid) {
 
             const newNode = {
                 ...node,
-                isFinish: isFinish,
-                hCost: calculateMahattanDistance(r, c, row, col)
+                isFinish: isFinish
             }
-
-            // if(isFinish) {
-            //     newNode.isWall = false;
-            //     newNode.isVisited = false;
-            //     newNode.isFrontier = false;
-            //     newNode.isPath = false;
-            // }
 
             newGrid[r][c] = newNode;
         }
@@ -266,7 +250,8 @@ export function getStatistics(grid) {
         }
     }
 
-    stats.unvisited = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.frontier;
+    const leftover = (TOTAL_ROW * TOTAL_COL - 2) - stats.wall - stats.visited - stats.frontier;
+    stats.unvisited = leftover <= 0 ? 0 : leftover;
 
     return stats;
 }
@@ -275,18 +260,31 @@ function setAsWall() {
     return Math.random() < wallRatio;
 }
 
-export function generateRandomGrid(currentGrid, endRow, endCol) {
+export function generateRandomGrid(currentGrid) {
     const newGrid = generatePlainGrid(currentGrid);
 
     for(let r = 0; r < TOTAL_ROW; r++) {
         for(let c = 0; c < TOTAL_COL; c++) {
             const node = newGrid[r][c];
-            node.hCost = calculateMahattanDistance(r, c, endRow, endCol);
+            node.hCost = null;
 
             if(!node.isStart && !node.isFinish) {
                 node.isWall = setAsWall();
             }
             
+        }
+    }
+
+    return newGrid;
+}
+
+export function calculateGridHCost(currentGrid, endRow, endCol) {
+    const newGrid = currentGrid.slice();
+
+    for(let r = 0; r < TOTAL_ROW; r++) {
+        for(let c = 0; c < TOTAL_COL; c++) {
+            const node = newGrid[r][c];
+            node.hCost = calculateMahattanDistance(r, c, endRow, endCol);
         }
     }
 

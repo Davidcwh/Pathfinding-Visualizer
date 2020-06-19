@@ -35,7 +35,7 @@ export default class BFS {
                 //     await showPath(grid, this.togglePathNode, currentNode.row, currentNode.col);
                 //     return;
                 // }
-                if(!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) {
+                if((!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) || neighbour.isFinish) {
                     neighbour.isFrontier = true;
                     neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
                     this.toggleFrontierNode(neighbour.row, neighbour.col);

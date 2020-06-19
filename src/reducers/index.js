@@ -14,7 +14,8 @@ import { generateInitalGrid,
          generateRandomGrid,
          generatePlainGrid,
          generateNewStartGrid,
-         generateNewEndGrid } from '../util/GridGenerationUtil';
+         generateNewEndGrid,
+         calculateGridHCost } from '../util/GridGenerationUtil';
 
 const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultStatistics }, action) => {
     let newGrid = state.grid;
@@ -38,11 +39,11 @@ const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultSta
             break;
 
         case 'SHOW_INITIAL_BOARD':
-            newGrid = generatePlainGrid(state.grid, action.payload.row, action.payload.col);
+            newGrid = generatePlainGrid(state.grid);
             break;
 
         case 'RESET_BOARD_WITH_WALLS':
-            newGrid = generateGridWithWalls(state.grid, action.payload.row, action.payload.col);
+            newGrid = generateGridWithWalls(state.grid);
             break;
 
         case 'MARK_HEAD_NODE':
@@ -58,7 +59,7 @@ const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultSta
             break;
 
         case 'GENERATE_RANDOM_GRID':
-            newGrid = generateRandomGrid(state.grid, action.payload.row, action.payload.col);
+            newGrid = generateRandomGrid(state.grid);
             break;
 
         case 'SET_START_NODE':
@@ -67,6 +68,10 @@ const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultSta
 
         case 'SET_END_NODE':
             newGrid = generateNewEndGrid(action.payload.row, action.payload.col, state.grid);
+            break;
+
+        case 'CALCULATE_HCOST':
+            newGrid = calculateGridHCost(state.grid, action.payload.row, action.payload.col);
             break;
 
         default:
