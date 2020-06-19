@@ -55,4 +55,45 @@ export default class BFS {
         }
         
     }
+
+    rerun(currentGrid) {
+        const grid = currentGrid.slice();
+
+        const queue = new Queue();
+        const startNode = grid[this.startNode.row][this.startNode.col];
+        queue.enqueue(startNode);
+
+        while(!queue.isEmpty()) {
+            const currentNode = queue.dequeue();
+            currentNode.isFrontier = false;
+            currentNode.isVisited = true;
+
+            if(currentNode.isFinish) {
+
+                let node = currentNode;
+                while(node !== undefined) {
+                    node.isPath = true;
+                    if(!node.previousNode) {
+                        break;
+                    }
+                    node = grid[node.previousNode.row][node.previousNode.col]
+                }
+
+
+                return grid;
+            }
+
+            const neighbours = getNodeNeighbours(grid, currentNode);
+            for(let i = 0; i < neighbours.length; i++) {
+                const neighbour = neighbours[i];
+                if((!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) || neighbour.isFinish) {
+                    neighbour.isFrontier = true;
+                    neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                    queue.enqueue(neighbour);
+                }
+            }
+        }
+
+        return grid;
+    }
 }

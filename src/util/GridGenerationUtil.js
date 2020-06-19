@@ -1,5 +1,9 @@
 import { gridDetails, defaultStatistics, wallRatio } from '../constants';
 import { calculateMahattanDistance } from './AlgorithmUtil';
+import BFS from './algorithms/BFS';
+import DFS from './algorithms/DFS';
+import AStar from './algorithms/AStar';
+import Greedy from './algorithms/Greedy';
 
 const  {START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL, TOTAL_ROW, TOTAL_COL} = gridDetails;
 
@@ -123,7 +127,6 @@ export function generateGridWithWalls(currentGrid) {
             newNode.isStart = node.isStart;
             newNode.isFinish = node.isFinish;
             newNode.isWall = node.isWall;
-            newNode.hCost = null;
 
             newGrid[r][c] = newNode;
         }
@@ -175,45 +178,17 @@ export function generateMarkBacktrackGrid(array, currentGrid) {
     return newGrid;
 }
 
-export function generateNewStartGrid(row, col, currentGrid) {
+export function generateNewStartGrid(newStart, oldStart, currentGrid) {
     const newGrid = currentGrid.slice();
-
-    for(let r = 0; r < TOTAL_ROW; r++) {
-        for(let c = 0; c < TOTAL_COL; c++) {
-            const node = newGrid[r][c];
-
-            let isStart = r === row && c === col;
-
-            const newNode = {
-                ...node,
-                isStart: isStart
-            }
-
-            newGrid[r][c] = newNode;
-        }
-    }
-
+    newGrid[newStart.row][newStart.col].isStart = true;
+    newGrid[oldStart.row][oldStart.col].isStart = false;
     return newGrid;
 }
 
-export function generateNewEndGrid(row, col, currentGrid) {
+export function generateNewEndGrid(newEnd, oldEnd, currentGrid) {
     const newGrid = currentGrid.slice();
-
-    for(let r = 0; r < TOTAL_ROW; r++) {
-        for(let c = 0; c < TOTAL_COL; c++) {
-            const node = newGrid[r][c];
-
-            let isFinish = r === row && c === col;
-
-            const newNode = {
-                ...node,
-                isFinish: isFinish
-            }
-
-            newGrid[r][c] = newNode;
-        }
-    }
-
+    newGrid[newEnd.row][newEnd.col].isFinish = true;
+    newGrid[oldEnd.row][oldEnd.col].isFinish = false;
     return newGrid;
 }
 
@@ -280,7 +255,6 @@ export function generateRandomGrid(currentGrid) {
 
 export function calculateGridHCost(currentGrid, endRow, endCol) {
     const newGrid = currentGrid.slice();
-
     for(let r = 0; r < TOTAL_ROW; r++) {
         for(let c = 0; c < TOTAL_COL; c++) {
             const node = newGrid[r][c];
@@ -289,4 +263,30 @@ export function calculateGridHCost(currentGrid, endRow, endCol) {
     }
 
     return newGrid;
+}
+
+export function generateRerunAlgorithmGrid(currentGrid, selectedAlgorithm, startNode, endNode) {
+    switch(selectedAlgorithm) {
+        case 'BFS':
+            const bfs = new BFS(startNode);
+            return bfs.rerun(generateGridWithWalls(currentGrid));
+
+        case 'DFS':
+            const dfs = new DFS(startNode);
+            return dfs.rerun(generateGridWithWalls(currentGrid));
+
+        case 'ASTAR':
+            const aStar = new AStar(startNode);
+            const updatedGridWithHCost = calculateGridHCost(generateGridWithWalls(currentGrid), endNode.row, endNode.col)
+            return aStar.rerun(updatedGridWithHCost);
+
+
+        case 'GREED':
+            const greedy = new Greedy(startNode);
+            const updatedGridWithHCost1 = calculateGridHCost(generateGridWithWalls(currentGrid), endNode.row, endNode.col)
+            return greedy.rerun(updatedGridWithHCost1);
+
+        default:
+            return currentGrid;
+    }
 }

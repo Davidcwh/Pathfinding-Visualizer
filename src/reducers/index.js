@@ -1,21 +1,24 @@
 import { combineReducers } from 'redux';
 import { defaultStatistics } from '../constants';
 import { gridDetails } from '../constants';
-import { generateInitalGrid,
-         generateToggleWallGrid, 
-         generateToggleFrontierGrid, 
-         generateMarkVisitedGrid, 
-         generateMarkPathGrid, 
-         generateGridWithWalls, 
-         generateMarkHeadGrid, 
-         generateUnmarkHeadGrid, 
-         generateMarkBacktrackGrid, 
-         getStatistics,
-         generateRandomGrid,
-         generatePlainGrid,
-         generateNewStartGrid,
-         generateNewEndGrid,
-         calculateGridHCost } from '../util/GridGenerationUtil';
+import { 
+    generateInitalGrid,
+    generateToggleWallGrid, 
+    generateToggleFrontierGrid, 
+    generateMarkVisitedGrid, 
+    generateMarkPathGrid, 
+    generateGridWithWalls, 
+    generateMarkHeadGrid, 
+    generateUnmarkHeadGrid, 
+    generateMarkBacktrackGrid, 
+    getStatistics,
+    generateRandomGrid,
+    generatePlainGrid,
+    generateNewStartGrid,
+    generateNewEndGrid,
+    calculateGridHCost,
+    generateRerunAlgorithmGrid
+ } from '../util/GridGenerationUtil';
 
 const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultStatistics }, action) => {
     let newGrid = state.grid;
@@ -63,15 +66,19 @@ const boardReducer = (state={ grid: generateInitalGrid(), statistics: defaultSta
             break;
 
         case 'SET_START_NODE':
-            newGrid = generateNewStartGrid(action.payload.row, action.payload.col, state.grid);
+            newGrid = generateNewStartGrid(action.payload.newStart, action.payload.oldStart, state.grid);
             break;
 
         case 'SET_END_NODE':
-            newGrid = generateNewEndGrid(action.payload.row, action.payload.col, state.grid);
+            newGrid = generateNewEndGrid(action.payload.newEnd, action.payload.oldEnd, state.grid);
             break;
 
         case 'CALCULATE_HCOST':
             newGrid = calculateGridHCost(state.grid, action.payload.row, action.payload.col);
+            break;
+
+        case 'RERUN_ALGORITHM':
+            newGrid = generateRerunAlgorithmGrid(state.grid, action.payload.selectedAlgorithm, action.payload.startNode, action.payload.endNode);
             break;
 
         default:
@@ -183,15 +190,16 @@ const moveStartEndReducer = (state=initialMoveStartEnd, action) => {
         case 'SET_START_NODE':
             return { ...state, 
                     start: {
-                        row: action.payload.row,
-                        col: action.payload.col} 
+                            row: action.payload.newStart.row,
+                            col: action.payload.newStart.col
+                        } 
                     }
 
         case 'SET_END_NODE':
             return { ...state, 
                     end: {
-                        row: action.payload.row,
-                        col: action.payload.col} 
+                        row: action.payload.newEnd.row,
+                        col: action.payload.newEnd.col} 
                     }
 
         default:

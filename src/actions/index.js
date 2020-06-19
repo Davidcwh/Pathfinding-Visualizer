@@ -142,17 +142,17 @@ export const endNodeNotMoving = () => {
     return { type: 'END_NODE_NOT_MOVING' };
 }
 
-export const setStartNode = (row, col) => {
+export const setStartNode = (newStart, oldStart) => {
     return {
         type: 'SET_START_NODE',
-        payload: { row, col }
+        payload: { newStart, oldStart }
     }
 }
 
-export const setEndNode = (row, col) => {
+export const setEndNode = (newEnd, oldEnd) => {
     return {
         type: 'SET_END_NODE',
-        payload: { row, col }
+        payload: { newEnd, oldEnd }
     }
 }
 
@@ -164,4 +164,11 @@ export const calculateHCost = (endNode) => {
             col: endNode.col
         }
     };
+}
+
+export const rerunAlgorithm = (selectedAlgorithm, startNode, endNode) => {
+    return {
+        type: 'RERUN_ALGORITHM',
+        payload: { selectedAlgorithm, startNode, endNode }
+    }
 }
