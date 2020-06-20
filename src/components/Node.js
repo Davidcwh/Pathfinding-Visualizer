@@ -1,14 +1,18 @@
 import '../css/Node.css';
 import React from 'react';
 import { connect } from 'react-redux';
-import { mouseIsNotPressed, 
-         dispatchMultipleActions, 
-         toggleWallNode,  
-         mouseIsPressed,
-         startNodeMoving,
-         endNodeMoving,
-         setStartNode,
-         setEndNode } from '../actions'
+import { 
+    mouseIsNotPressed, 
+    dispatchMultipleActions, 
+    toggleWallNode,  
+    mouseIsPressed,
+    startNodeMoving,
+    endNodeMoving,
+    setStartNode,
+    setEndNode,
+    calculateHCost,
+    rerunAlgorithm
+} from '../actions'
 
 class Node extends React.Component {
     constructor(props) {
@@ -17,6 +21,7 @@ class Node extends React.Component {
         this.onMouseDownHandler = this.onMouseDownHandler.bind(this);
         this.onMouseEnterHandler = this.onMouseEnterHandler.bind(this);
         this.onMouseUpHandler = this.onMouseUpHandler.bind(this);
+        this.onMouseLeaveHandler = this.onMouseLeaveHandler.bind(this);
     }
 
     onMouseDownHandler() {
@@ -39,11 +44,11 @@ class Node extends React.Component {
             onMouseDownActions.push(() => toggleWallNode());
         }
 
-        if(isStart && algorithmStatus === 'STOPPED') {
+        if(isStart && (algorithmStatus === 'STOPPED' || algorithmStatus === 'COMPLETE')) {
             onMouseDownActions.push(() => startNodeMoving(true));
         }
 
-        if(isFinish && algorithmStatus === 'STOPPED') {
+        if(isFinish && (algorithmStatus === 'STOPPED' || algorithmStatus === 'COMPLETE')) {
             onMouseDownActions.push(() => endNodeMoving(true));
         }
 
@@ -82,6 +87,11 @@ class Node extends React.Component {
             isEndMoving,
             setStartNode,
             setEndNode,
+            algorithmStatus,
+            selectedAlgorithm,
+            rerunAlgorithm,
+            startNode,
+            endNode,
         } = this.props;
 
         const onMouseDownActions = []
@@ -94,14 +104,22 @@ class Node extends React.Component {
             if(isFinish) {
                 return;
             }
-            onMouseDownActions.push(() => setStartNode(row, col));
+            onMouseDownActions.push(() => setStartNode({ row, col }, startNode));
+
+            if(algorithmStatus === 'COMPLETE') {
+                onMouseDownActions.push(() => rerunAlgorithm(selectedAlgorithm, { row, col }, endNode));
+            }
         }
 
         if(isEndMoving) {
             if(isStart) {
                 return;
             }
-            onMouseDownActions.push(() => setEndNode(row, col));
+            onMouseDownActions.push(() => setEndNode({ row, col }, endNode));
+
+            if(algorithmStatus === 'COMPLETE') {
+                onMouseDownActions.push(() => rerunAlgorithm(selectedAlgorithm, startNode, { row, col }));
+            }
         }
 
         if(!isStartMoving && !isEndMoving && !isWall && !isFrontier && !isVisited && !isFinish && !isStart) {
@@ -109,6 +127,9 @@ class Node extends React.Component {
         }
 
         dispatchMultipleActions(onMouseDownActions);
+    }
+
+    onMouseLeaveHandler() {
     }
 
     render() {
@@ -146,7 +167,8 @@ class Node extends React.Component {
                 className={`node ${nodeType}`}
                 onMouseDown={this.onMouseDownHandler}
                 onMouseUp={this.onMouseUpHandler}
-                onMouseEnter={this.onMouseEnterHandler}>
+                onMouseEnter={this.onMouseEnterHandler}
+                onMouseLeave={this.onMouseLeaveHandler}>
                 {value}
             </div>
         );
@@ -173,7 +195,9 @@ const mapStateToProps = (state, ownProps) => {
         selectedAlgorithm: state.selectedAlgorithm,
         algorithmStatus: state.algorithmStatus,
         isStartMoving: moveStartEnd.isStartMoving,
-        isEndMoving: moveStartEnd.isEndMoving
+        isEndMoving: moveStartEnd.isEndMoving,
+        startNode: moveStartEnd.start,
+        endNode: moveStartEnd.end
     }
 }
 
@@ -185,8 +209,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatchMultipleActions: (actions) => dispatchMultipleActions(actions),
         startNodeMoving: (isMoving) => dispatch(startNodeMoving(isMoving)),
         endNodeMoving: (isMoving) => dispatch(endNodeMoving(isMoving)),
-        setStartNode: (row, col) => dispatch(setStartNode(row, col)),
-        setEndNode: (row, col) => dispatch(setEndNode(row, col))
+        setStartNode: (newStart, oldStart) => dispatch(setStartNode(newStart, oldStart)),
+        setEndNode: (newEnd, oldEnd) => dispatch(setEndNode(newEnd, oldEnd)),
+        calculateHCost: (endNode) => dispatch(calculateHCost(endNode)),
+        rerunAlgorithm: (selectedAlgorithm, startNode, endNode) => dispatch(rerunAlgorithm(selectedAlgorithm, startNode, endNode))
     }
 }
 

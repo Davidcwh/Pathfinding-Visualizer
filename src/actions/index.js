@@ -29,34 +29,16 @@ export const stopAlgorithm = () => {
     return { type: 'STOP_ALGORITHM'};
 }
 
-export const showInitialBoard = (endNode) => {
-    return { 
-        type: 'SHOW_INITIAL_BOARD',
-        payload: {
-            row: endNode.row,
-            col: endNode.col
-        }
-    };
+export const showInitialBoard = () => {
+    return { type: 'SHOW_INITIAL_BOARD' };
 }
 
-export const resetBoardWithWalls = (endNode) => {
-    return { 
-        type: 'RESET_BOARD_WITH_WALLS',
-        payload: {
-            row: endNode.row,
-            col: endNode.col
-        }
-    };
+export const resetBoardWithWalls = () => {
+    return { type: 'RESET_BOARD_WITH_WALLS' };
 }
 
-export const generateRandomGrid = (endNode) => {
-    return { 
-        type: 'GENERATE_RANDOM_GRID',
-        payload: {
-            row: endNode.row,
-            col: endNode.col
-        }
-    };
+export const generateRandomGrid = (endNde) => {
+    return { type: 'GENERATE_RANDOM_GRID' };
 }
 
 export const pauseAlgorithm = () => {
@@ -160,16 +142,33 @@ export const endNodeNotMoving = () => {
     return { type: 'END_NODE_NOT_MOVING' };
 }
 
-export const setStartNode = (row, col) => {
+export const setStartNode = (newStart, oldStart) => {
     return {
         type: 'SET_START_NODE',
-        payload: { row, col }
+        payload: { newStart, oldStart }
     }
 }
 
-export const setEndNode = (row, col) => {
+export const setEndNode = (newEnd, oldEnd) => {
     return {
         type: 'SET_END_NODE',
-        payload: { row, col }
+        payload: { newEnd, oldEnd }
+    }
+}
+
+export const calculateHCost = (endNode) => {
+    return { 
+        type: 'CALCULATE_HCOST',
+        payload: {
+            row: endNode.row,
+            col: endNode.col
+        }
+    };
+}
+
+export const rerunAlgorithm = (selectedAlgorithm, startNode, endNode) => {
+    return {
+        type: 'RERUN_ALGORITHM',
+        payload: { selectedAlgorithm, startNode, endNode }
     }
 }

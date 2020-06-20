@@ -69,7 +69,7 @@ export default class DFS {
 
             visitedStack.push(currentNode);
 
-            const validNeighbours = neighbours.filter(neighbour => !neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier)
+            const validNeighbours = neighbours.filter(neighbour => ((!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) || neighbour.isFinish))
 
             if(validNeighbours.length === 0) {
                 currentNode.isHead = false;
@@ -142,5 +142,82 @@ export default class DFS {
         }
 
         return newStack;
+    }
+
+    rerun(currentGrid) {
+        const grid = currentGrid.slice();
+
+        let unvisitedStack = new Stack();
+        const startNode = grid[this.startNode.row][this.startNode.col];
+        unvisitedStack.push(startNode);
+
+        const visitedStack = new Stack();
+
+        while(!unvisitedStack.isEmpty()) {
+            const currentNode = unvisitedStack.pop();
+            unvisitedStack = this.removeFromStack(unvisitedStack, currentNode);
+
+            currentNode.isVisited = true;
+            currentNode.isHead = true;
+
+            if(currentNode.previousNode !== null) {
+                const { row, col } = currentNode.previousNode;
+                grid[row][col].isHead = false;
+            }
+
+            if(currentNode.isFinish) {
+                let node = currentNode;
+                while(node !== undefined) {
+                    node.isPath = true;
+                    if(!node.previousNode) {
+                        break;
+                    }
+                    node = grid[node.previousNode.row][node.previousNode.col]
+                }
+                return grid;
+            }
+
+            const neighbours = getNodeNeighbours(grid, currentNode);
+            for(let i = neighbours.length - 1; i >= 0; i--) {
+                const neighbour = neighbours[i];
+                if((!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) || neighbour.isFinish) {
+                    neighbour.previousNode = { row: currentNode.row, col: currentNode.col};
+                    unvisitedStack.push(neighbour);
+                }
+            }
+
+            visitedStack.push(currentNode);
+
+            const validNeighbours = neighbours.filter(neighbour => ((!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) || neighbour.isFinish))
+
+            if(validNeighbours.length === 0) {
+                currentNode.isHead = false;
+                this.rerunBacktrack(visitedStack, unvisitedStack, grid);
+               
+            }
+
+        }
+
+        return grid;
+    }
+
+    rerunBacktrack(visitedStack, unvisitedStack, grid) {
+
+        let backtrackNodes = [];
+
+        while(!visitedStack.isEmpty() && !unvisitedStack.isEmpty()) {
+            const visitedNode = visitedStack.pop();
+
+            let neighbours = getNodeNeighbours(grid, visitedNode);
+            neighbours = neighbours.filter(neighbour => ((!neighbour.isWall && !neighbour.isVisited && !neighbour.isFrontier) || neighbour.isFinish))
+            if(this.contains(neighbours, unvisitedStack.peek())) {
+                visitedStack.push(visitedNode);
+                backtrackNodes.map(node => node.isBacktrack = true);
+                return;
+            } else {
+                backtrackNodes.push(visitedNode);
+            }   
+        }
+
     }
 }
