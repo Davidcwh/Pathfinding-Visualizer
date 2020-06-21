@@ -6,6 +6,7 @@ import AStar from '../util/algorithms/AStar';
 import Greedy from '../util/algorithms/Greedy';
 import { isAlgorithmRunning, isAlgorithmStopped } from '../util/AlgorithmUtil'
 import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
+import SelectAlgorithmModal from './SelectAlgorithmModal/SelectAlgorithmModal';
 import { 
     showInitialBoard, 
     runAlgorithm, 
@@ -148,7 +149,7 @@ class Menu extends React.Component {
         return (
             <div className="ui five item menu">
                 <a  onClick={canGenerateRandomGrid ? generateRandomGrid : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
-                <SelectAlgorithmDropdown />
+                <SelectAlgorithmModal />
                 <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
                 <a onClick={() => this.clearBoard(false)} className="item">Clear Path</a>
                 <a onClick={() => this.clearBoard(true)} className="item">Clear Board</a>
