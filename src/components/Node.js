@@ -137,7 +137,8 @@ class Node extends React.Component {
         const { 
             row, col, 
             isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, fCost, 
-            selectedAlgorithm, 
+            selectedAlgorithm, algorithmStatus,
+            isStartMoving, isEndMoving
          } = this.props;
 
 
@@ -159,12 +160,17 @@ class Node extends React.Component {
                         ? 'node-frontier'
                         : ''
 
+        let extra = '';
+        if(((isFinish || isStart) && ((algorithmStatus === 'STOPPED') || (algorithmStatus === 'COMPLETE'))) || isStartMoving || isEndMoving) {
+            extra = 'pointer';
+        }
+
         const value = ((selectedAlgorithm === 'ASTAR' || selectedAlgorithm === 'GREED') && (fCost !== null)) ? fCost : ''
 
         return (
             <div 
                 id={`node-${row}-${col}`}
-                className={`node ${nodeType}`}
+                className={`node ${nodeType} ${extra}`}
                 onMouseDown={this.onMouseDownHandler}
                 onMouseUp={this.onMouseUpHandler}
                 onMouseEnter={this.onMouseEnterHandler}
