@@ -20,6 +20,7 @@ class SelectAlgorithmModal extends React.Component {
                 closeOnDimmerClick={this.state.closeOnDimmerClick}
                 onClose={this.close}
                 style={{textAlign: 'center'}}
+                size={"tiny"}
             >
                 <Modal.Header >Select Algorithm</Modal.Header>
                     <Modal.Content>

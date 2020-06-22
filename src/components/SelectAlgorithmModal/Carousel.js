@@ -1,4 +1,5 @@
 import React from 'react';
+import CarouselCard from './CarouselCard';
 import '../../css/Carousel.css';
 
 class Carousel extends React.Component {
@@ -50,21 +51,19 @@ class Carousel extends React.Component {
                 <div className="slideshow-container">
 
                     <div className="mySlides fade">
-                        <div className="numbertext">1 / 3</div>
-                        <img alt="pic 1" src='https://react.semantic-ui.com/images/avatar/large/rachel.png' style={{width: "100%"}}/>
-                        <div className="text">Breath First Search</div>
+                        <CarouselCard/>
                     </div>
 
-                    <div className="mySlides fade">
+                    <div className="mySlides fade" >
                         <div className="numbertext">2 / 3</div>
                         <img alt="pic 2" src='https://react.semantic-ui.com/images/avatar/large/rachel.png' style={{width: "100%"}}/>
                         <div className="text">Caption Two</div>
                     </div>
 
                     <div className="mySlides fade">
-                    <div className="numbertext">3 / 3</div>
-                    <img alt="pic 3" src='https://react.semantic-ui.com/images/avatar/large/rachel.png' style={{width: "100%"}}/>
-                    <div className="text">Caption Three</div>
+                        <div className="numbertext">3 / 3</div>
+                        <img alt="pic 3" src='https://react.semantic-ui.com/images/avatar/large/rachel.png' style={{width: "100%"}}/>
+                        <div className="text">Caption Three</div>
                     </div>
 
                     <a className="prev" onClick={() => this.plusSlides(-1)}>&#10094;</a>
