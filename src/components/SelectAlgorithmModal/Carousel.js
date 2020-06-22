@@ -51,19 +51,21 @@ class Carousel extends React.Component {
                 <div className="slideshow-container">
 
                     <div className="mySlides fade">
-                        <CarouselCard/>
+                        <h1 className="ui header">Breath First Search (BFS)</h1>
+                        <img src={require("../../media/bfs.gif")} alt="bfs.gif" height="300" width="300"/>
+                        <div>Breath First Search gurantees the shortest path distance</div>
                     </div>
 
                     <div className="mySlides fade" >
-                        <div className="numbertext">2 / 3</div>
-                        <img alt="pic 2" src='https://react.semantic-ui.com/images/avatar/large/rachel.png' style={{width: "100%"}}/>
-                        <div className="text">Caption Two</div>
+                        <h1 className="ui header">Depth First Search (DFS)</h1>
+                        <img src={require("../../media/dfs.gif")} alt="bfs.gif" height="300" width="300"/>
+                        <div>Depth First Search does not gurantees the shortest path distance</div>
                     </div>
 
                     <div className="mySlides fade">
-                        <div className="numbertext">3 / 3</div>
-                        <img alt="pic 3" src='https://react.semantic-ui.com/images/avatar/large/rachel.png' style={{width: "100%"}}/>
-                        <div className="text">Caption Three</div>
+                        <h1 className="ui header">A Star Search</h1>
+                        <img src={require("../../media/astar.gif")} alt="bfs.gif" height="300" width="300"/>
+                        <div>A Star Search uses the manhattan distance heuristics from each node to the end node</div>
                     </div>
 
                     <a className="prev" onClick={() => this.plusSlides(-1)}>&#10094;</a>

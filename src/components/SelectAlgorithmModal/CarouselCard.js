@@ -22,7 +22,7 @@ const CarouselCard = () => (
 //   </Card>
     <div>
         <h1 className="ui header">Breath First Search (BFS)</h1>
-        <Image src='https://react.semantic-ui.com/images/avatar/large/rachel.png'/>
+        <img src={require("../../media/bfs.gif")} alt="bfs.gif" height="300" width="300"/>
         <div>Breath First Search gurantees the shortest path distance</div>
     </div>
 )

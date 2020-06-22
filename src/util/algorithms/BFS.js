@@ -42,7 +42,7 @@ export default class BFS {
                     queue.enqueue(neighbour);
                 }
             }
-            await sleep(0);
+            await sleep(30);
         }
 
         if(isAlgorithmPaused()) {
