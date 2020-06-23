@@ -180,15 +180,15 @@ export function generateMarkBacktrackGrid(array, currentGrid) {
 
 export function generateNewStartGrid(newStart, oldStart, currentGrid) {
     const newGrid = currentGrid.slice();
-    newGrid[newStart.row][newStart.col].isStart = true;
     newGrid[oldStart.row][oldStart.col].isStart = false;
+    newGrid[newStart.row][newStart.col].isStart = true;
     return newGrid;
 }
 
 export function generateNewEndGrid(newEnd, oldEnd, currentGrid) {
     const newGrid = currentGrid.slice();
-    newGrid[newEnd.row][newEnd.col].isFinish = true;
     newGrid[oldEnd.row][oldEnd.col].isFinish = false;
+    newGrid[newEnd.row][newEnd.col].isFinish = true;
     return newGrid;
 }
 
