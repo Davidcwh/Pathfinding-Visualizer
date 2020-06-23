@@ -1,6 +1,8 @@
 import React from 'react';
-import { Button, Header, Image, Modal } from 'semantic-ui-react';
-import Carousel from '../SelectAlgorithmModal/Carousel'
+import { connect } from 'react-redux';
+import { Modal } from 'semantic-ui-react';
+import Carousel from '../SelectAlgorithmModal/Carousel';
+import { carouselCards } from '../../constants';
 
 class SelectAlgorithmModal extends React.Component {
     state = { open: false }
@@ -12,10 +14,22 @@ class SelectAlgorithmModal extends React.Component {
     close = () => this.setState({ open: false })
 
     render() {
+        let buttonText = 'Select Algorithm';
+
+        for(let i = 0; i < carouselCards.length; i++) {
+            if(carouselCards[i].value === this.props.selectedAlgorithm) {
+                buttonText = carouselCards[i].header;
+                break;
+            }
+        }
+
+        const isDisabled = this.props.algorithmStatus !== 'STOPPED';
+        let triggerClass = isDisabled ? "active item" : "item";
+
         return (
             <Modal 
                 open={this.state.open}
-                trigger={<a className="item" onClick={this.closeConfigShow(false, true)} >Show Modal </a>}
+                trigger={<a className={triggerClass} onClick={isDisabled ? () => {} : this.closeConfigShow(false, true)}> {buttonText} </a>}
                 closeOnEscape={this.state.closeOnEscape}
                 closeOnDimmerClick={this.state.closeOnDimmerClick}
                 onClose={this.close}
@@ -24,19 +38,19 @@ class SelectAlgorithmModal extends React.Component {
             >
                 <Modal.Header >Select Algorithm</Modal.Header>
                     <Modal.Content>
-                        <Carousel/>
+                        <Carousel close={this.close}/>
                     </Modal.Content>
-                    <Modal.Actions style={{textAlign: 'center'}}>
-                        <Button
-                            positive
-                            onClick={this.close}
-                            content='Select'
-                        />
-                    </Modal.Actions>
             </Modal>
             
         );
     }
 }
 
-export default SelectAlgorithmModal;
+const mapStateToProps = state => {
+    return {
+        selectedAlgorithm: state.selectedAlgorithm,
+        algorithmStatus: state.algorithmStatus
+    }
+}
+
+export default connect(mapStateToProps)(SelectAlgorithmModal);

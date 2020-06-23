@@ -5,7 +5,6 @@ import DFS from '../util/algorithms/DFS';
 import AStar from '../util/algorithms/AStar';
 import Greedy from '../util/algorithms/Greedy';
 import { isAlgorithmRunning, isAlgorithmStopped } from '../util/AlgorithmUtil'
-import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
 import SelectAlgorithmModal from './SelectAlgorithmModal/SelectAlgorithmModal';
 import { 
     showInitialBoard, 

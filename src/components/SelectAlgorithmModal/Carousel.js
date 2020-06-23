@@ -1,80 +1,73 @@
 import React from 'react';
-import CarouselCard from './CarouselCard';
+import { connect } from 'react-redux';
+import { Button } from 'semantic-ui-react';
+import { carouselCards, algorithmIndexMapping } from '../../constants';
+import { setSelectedAlgorithm } from '../../actions';
 import '../../css/Carousel.css';
 
 class Carousel extends React.Component {
     constructor(props) {
         super(props);
-        this.showSlides = this.showSlides.bind(this);
+        this.setSlide = this.setSlide.bind(this);
         this.plusSlides = this.plusSlides.bind(this);
-        this.currentSlide = this.currentSlide.bind(this);
-        this.state = { slideIndex: 1};
+        this.updateDots = this.updateDots.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+
+        const initialIndex = props.selectedAlgorithm === 'none' ? 0 : algorithmIndexMapping[props.selectedAlgorithm];
+        this.state = { slideIndex: initialIndex, carouselCards: carouselCards};
     }
 
     componentDidMount() {
-        this.showSlides(this.state.slideIndex);
+        this.updateDots(this.state.slideIndex);
     }
 
-    showSlides(n) {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
+    updateDots(index) {
         var dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {
-            this.setState({slideIndex: 1})
-        }
-        if (n < 1) {
-            this.setState({slideIndex: slides.length})
-        }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
+        for (let i = 0; i < dots.length; i++) {
             dots[i].className = dots[i].className.replace(" active", "");
         }
-        slides[this.state.slideIndex-1].style.display = "block";
-        dots[this.state.slideIndex-1].className += " active";
+        dots[index].className += " active";
     }
 
     // Next/previous controls
     plusSlides(n) {
-        const newSlideIndex = this.state.slideIndex + n;
-        this.setState({slideIndex: newSlideIndex})
-        this.showSlides(newSlideIndex);
+        let newSlideIndex = this.state.slideIndex + n;
+
+        if (newSlideIndex > this.state.carouselCards.length - 1) {
+            newSlideIndex = 0;
+        } else if(newSlideIndex < 0) {
+            newSlideIndex = this.state.carouselCards.length - 1;
+        }
+        
+        this.updateDots(newSlideIndex);
+        this.setState({slideIndex: newSlideIndex});
     }
-  
-  // Thumbnail image controls
-   currentSlide(n) {
-        this.setState({ slideIndex: n });
-        this.showSlides(n);
+
+    setSlide(index) {
+        this.setState({ slideIndex: index });
+        this.updateDots(index);
+    }
+
+    onSelect() {
+        const { close, setSelectedAlgorithm } = this.props;
+        const { slideIndex, carouselCards } = this.state;
+        setSelectedAlgorithm(carouselCards[slideIndex].value);
+        close();
     }
 
     render() {
+        const { slideIndex } = this.state;
+        const currentCard = carouselCards[slideIndex];
+        const { header, description, src } = currentCard;
+
         return (
             <>
                 <div className="slideshow-container">
 
                     <div className="mySlides fade">
-                        <h1 className="ui header">Breath First Search (BFS)</h1>
-                        <img src={require("../../media/bfs.gif")} alt="bfs.gif" height="300" width="300"/>
-                        <div>Breath First Search gurantees the shortest path distance</div>
-                    </div>
-
-                    <div className="mySlides fade" >
-                        <h1 className="ui header">Depth First Search (DFS)</h1>
-                        <img src={require("../../media/dfs.gif")} alt="bfs.gif" height="300" width="300"/>
-                        <div>Depth First Search does not gurantees the shortest path distance</div>
-                    </div>
-
-                    <div className="mySlides fade">
-                        <h1 className="ui header">A Star Search</h1>
-                        <img src={require("../../media/astar.gif")} alt="bfs.gif" height="300" width="300"/>
-                        <div>A Star Search uses the manhattan distance heuristics from each node to the goal node</div>
-                    </div>
-
-                    <div className="mySlides fade">
-                        <h1 className="ui header">Greedy Best-First Search</h1>
-                        <img src={require("../../media/greedy.gif")} alt="bfs.gif" height="300" width="300"/>
-                        <div>Greedy Best-First Search only considers nodes closest to the goal node</div>
+                        <h1 className="ui header">{header}</h1>
+                        <img src={src} alt={`${header} gif`} height="300" width="300"/>
+                        <div>{description}</div>
                     </div>
 
                     <a className="prev" onClick={() => this.plusSlides(-1)}>&#10094;</a>
@@ -84,14 +77,32 @@ class Carousel extends React.Component {
                 <br/>
 
                 <div style={{textAlign: "center"}}>
-                    <span className="dot" onClick={() => this.currentSlide(1)}></span> 
-                    <span className="dot" onClick={() => this.currentSlide(2)}></span> 
-                    <span className="dot" onClick={() => this.currentSlide(3)}></span> 
-                    <span className="dot" onClick={() => this.currentSlide(4)}></span> 
+                    <span className="dot" onClick={() => this.setSlide(0)}></span> 
+                    <span className="dot" onClick={() => this.setSlide(1)}></span> 
+                    <span className="dot" onClick={() => this.setSlide(2)}></span> 
+                    <span className="dot" onClick={() => this.setSlide(3)}></span> 
                 </div>
+
+                <Button
+                            positive
+                            onClick={this.onSelect}
+                            content='Select'
+                        />
             </>
         );
     }
 }
 
-export default Carousel;
+const mapStateToProps = state => {
+    return {
+        selectedAlgorithm: state.selectedAlgorithm
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setSelectedAlgorithm: (algorithm) => {dispatch(setSelectedAlgorithm(algorithm))}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Carousel);
