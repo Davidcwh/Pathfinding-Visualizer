@@ -16,10 +16,6 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 .node-finish {
   background-color: red;
 }
