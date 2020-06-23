@@ -19,8 +19,12 @@ class Carousel extends React.Component {
         var i;
         var slides = document.getElementsByClassName("mySlides");
         var dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {this.setState({slideIndex: 1})}
-        if (n < 1) {this.setState({slideIndex: slides.length})}
+        if (n > slides.length) {
+            this.setState({slideIndex: 1})
+        }
+        if (n < 1) {
+            this.setState({slideIndex: slides.length})
+        }
         for (i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
         }
@@ -40,13 +44,12 @@ class Carousel extends React.Component {
   
   // Thumbnail image controls
    currentSlide(n) {
-        this.setState({slideIndex: n})
+        this.setState({ slideIndex: n });
         this.showSlides(n);
     }
 
     render() {
         return (
-            
             <>
                 <div className="slideshow-container">
 
@@ -65,7 +68,13 @@ class Carousel extends React.Component {
                     <div className="mySlides fade">
                         <h1 className="ui header">A Star Search</h1>
                         <img src={require("../../media/astar.gif")} alt="bfs.gif" height="300" width="300"/>
-                        <div>A Star Search uses the manhattan distance heuristics from each node to the end node</div>
+                        <div>A Star Search uses the manhattan distance heuristics from each node to the goal node</div>
+                    </div>
+
+                    <div className="mySlides fade">
+                        <h1 className="ui header">Greedy Best-First Search</h1>
+                        <img src={require("../../media/greedy.gif")} alt="bfs.gif" height="300" width="300"/>
+                        <div>Greedy Best-First Search only considers nodes closest to the goal node</div>
                     </div>
 
                     <a className="prev" onClick={() => this.plusSlides(-1)}>&#10094;</a>
@@ -77,11 +86,10 @@ class Carousel extends React.Component {
                 <div style={{textAlign: "center"}}>
                     <span className="dot" onClick={() => this.currentSlide(1)}></span> 
                     <span className="dot" onClick={() => this.currentSlide(2)}></span> 
-                    <span class="dot" onClick={() => this.currentSlide(3)}></span> 
+                    <span className="dot" onClick={() => this.currentSlide(3)}></span> 
+                    <span className="dot" onClick={() => this.currentSlide(4)}></span> 
                 </div>
-
             </>
-                
         );
     }
 }
