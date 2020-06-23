@@ -82,12 +82,11 @@ class Carousel extends React.Component {
                     <span className="dot" onClick={() => this.setSlide(2)}></span> 
                     <span className="dot" onClick={() => this.setSlide(3)}></span> 
                 </div>
-
+                <br/>
                 <Button
-                            positive
-                            onClick={this.onSelect}
-                            content='Select'
-                        />
+                    positive
+                    onClick={this.onSelect}
+                    content='Select'/>
             </>
         );
     }
