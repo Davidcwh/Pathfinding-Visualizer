@@ -1,22 +1,26 @@
 {
   "files": {
-    "main.css": "/Pathfinding-Visualizer/static/css/main.81f7b119.chunk.css",
-    "main.js": "/Pathfinding-Visualizer/static/js/main.ea35e2e7.chunk.js",
-    "main.js.map": "/Pathfinding-Visualizer/static/js/main.ea35e2e7.chunk.js.map",
+    "main.css": "/Pathfinding-Visualizer/static/css/main.a827bbe3.chunk.css",
+    "main.js": "/Pathfinding-Visualizer/static/js/main.30265472.chunk.js",
+    "main.js.map": "/Pathfinding-Visualizer/static/js/main.30265472.chunk.js.map",
     "runtime-main.js": "/Pathfinding-Visualizer/static/js/runtime-main.2b1f6a90.js",
     "runtime-main.js.map": "/Pathfinding-Visualizer/static/js/runtime-main.2b1f6a90.js.map",
-    "static/js/2.2092eb0f.chunk.js": "/Pathfinding-Visualizer/static/js/2.2092eb0f.chunk.js",
-    "static/js/2.2092eb0f.chunk.js.map": "/Pathfinding-Visualizer/static/js/2.2092eb0f.chunk.js.map",
+    "static/js/2.858822c0.chunk.js": "/Pathfinding-Visualizer/static/js/2.858822c0.chunk.js",
+    "static/js/2.858822c0.chunk.js.map": "/Pathfinding-Visualizer/static/js/2.858822c0.chunk.js.map",
     "index.html": "/Pathfinding-Visualizer/index.html",
-    "precache-manifest.0189d7d5943f13555b35fa3a46ea12ba.js": "/Pathfinding-Visualizer/precache-manifest.0189d7d5943f13555b35fa3a46ea12ba.js",
+    "precache-manifest.77fda210930fa06441dc69b1d5652e62.js": "/Pathfinding-Visualizer/precache-manifest.77fda210930fa06441dc69b1d5652e62.js",
     "service-worker.js": "/Pathfinding-Visualizer/service-worker.js",
-    "static/css/main.81f7b119.chunk.css.map": "/Pathfinding-Visualizer/static/css/main.81f7b119.chunk.css.map",
-    "static/js/2.2092eb0f.chunk.js.LICENSE.txt": "/Pathfinding-Visualizer/static/js/2.2092eb0f.chunk.js.LICENSE.txt"
+    "static/css/main.a827bbe3.chunk.css.map": "/Pathfinding-Visualizer/static/css/main.a827bbe3.chunk.css.map",
+    "static/js/2.858822c0.chunk.js.LICENSE.txt": "/Pathfinding-Visualizer/static/js/2.858822c0.chunk.js.LICENSE.txt",
+    "static/media/astar.gif": "/Pathfinding-Visualizer/static/media/astar.55bb27b6.gif",
+    "static/media/bfs.gif": "/Pathfinding-Visualizer/static/media/bfs.43ee8b49.gif",
+    "static/media/dfs.gif": "/Pathfinding-Visualizer/static/media/dfs.9e31d125.gif",
+    "static/media/greedy.gif": "/Pathfinding-Visualizer/static/media/greedy.156a81d4.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.2b1f6a90.js",
-    "static/js/2.2092eb0f.chunk.js",
-    "static/css/main.81f7b119.chunk.css",
-    "static/js/main.ea35e2e7.chunk.js"
+    "static/js/2.858822c0.chunk.js",
+    "static/css/main.a827bbe3.chunk.css",
+    "static/js/main.30265472.chunk.js"
   ]
 }
