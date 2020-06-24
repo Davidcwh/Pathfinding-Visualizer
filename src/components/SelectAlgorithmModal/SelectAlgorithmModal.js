@@ -24,19 +24,19 @@ class SelectAlgorithmModal extends React.Component {
         }
 
         const isDisabled = this.props.algorithmStatus !== 'STOPPED';
-        let triggerClass = isDisabled ? "active item" : "item";
+        let triggerClass = isDisabled ? "disabled" : "";
 
         return (
             <Modal 
                 open={this.state.open}
-                trigger={<a className={triggerClass} onClick={isDisabled ? () => {} : this.closeConfigShow(false, true)}> {buttonText} </a>}
+                trigger={<div className={`item side ${triggerClass}`} onClick={isDisabled ? () => {} : this.closeConfigShow(false, true)}> {buttonText} </div>}
                 closeOnEscape={this.state.closeOnEscape}
                 closeOnDimmerClick={this.state.closeOnDimmerClick}
                 onClose={this.close}
-                style={{textAlign: 'center'}}
+                style={{textAlign: 'center', marginBottom: 'auto'}}
                 size={"tiny"}
             >
-                <Modal.Header >Select Algorithm</Modal.Header>
+                <Modal.Header style={{backgroundColor: "rgb(12, 53, 71)", color: "white"}}>Select Algorithm</Modal.Header>
                     <Modal.Content>
                         <Carousel close={this.close}/>
                     </Modal.Content>
