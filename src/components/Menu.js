@@ -5,7 +5,8 @@ import DFS from '../util/algorithms/DFS';
 import AStar from '../util/algorithms/AStar';
 import Greedy from '../util/algorithms/Greedy';
 import { isAlgorithmRunning, isAlgorithmStopped } from '../util/AlgorithmUtil'
-import SelectAlgorithmDropdown from './SelectAlgorithmDropdown';
+import SelectAlgorithmModal from './SelectAlgorithmModal/SelectAlgorithmModal';
+import '../css/Menu.css';
 import { 
     showInitialBoard, 
     runAlgorithm, 
@@ -71,6 +72,7 @@ class Menu extends React.Component {
         }
 
         runAlgorithm();
+        window.scrollTo(0,50);
 
         switch(selectedAlgorithm) {
             case "BFS":
@@ -129,29 +131,40 @@ class Menu extends React.Component {
     render() {
         const { selectedAlgorithm, algorithmStatus, isShowingPath, generateRandomGrid } = this.props;
 
-        const runButtonClass = (selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') ? "active item" : "item";
+        const runButtonClass = (selectedAlgorithm === 'none' || isShowingPath || algorithmStatus === 'COMPLETE') ? "disabledRun" : "run";
 
         const canGenerateRandomGrid = algorithmStatus === 'STOPPED';
 
-        const randomGridButtonClass = canGenerateRandomGrid ? "item" : "active item"; 
+        const randomGridButtonClass = canGenerateRandomGrid ? "" : "disabled"; 
 
         let runButtonText = "Run";
+        let runButtonColor = "";
 
         if((algorithmStatus === 'RUNNING' && isShowingPath) || algorithmStatus === 'COMPLETE') {
             runButtonText = "Complete";
+            runButtonColor = "complete";
         }
 
         if(algorithmStatus === 'RUNNING' && !isShowingPath) {
             runButtonText = "Pause";
+            runButtonColor = "pause";
         }
 
         return (
-            <div className="ui five item menu">
-                <a  onClick={canGenerateRandomGrid ? generateRandomGrid : () => {}} className={randomGridButtonClass} >Generate Random Grid</a>
-                <SelectAlgorithmDropdown />
-                <a onClick={this.runSelectedAlgorithm} className={runButtonClass}>{runButtonText}!</a>
-                <a onClick={() => this.clearBoard(false)} className="item">Clear Path</a>
-                <a onClick={() => this.clearBoard(true)} className="item">Clear Board</a>
+            <div className="bar">
+                <div onClick={canGenerateRandomGrid ? generateRandomGrid : () => {}} className ={`item side ${randomGridButtonClass}`}>
+                    Generate Random Grid
+                </div>
+                <SelectAlgorithmModal />
+                <div onClick={this.runSelectedAlgorithm} className={`item ${runButtonClass} ${runButtonColor}`}>
+                    {runButtonText}!
+                </div>
+                <div onClick={() => this.clearBoard(false)} className="item side">
+                    Clear Path
+                </div >
+                <div onClick={() => this.clearBoard(true)} className="item side">
+                    Clear Board
+                </div>
             </div>
         );
     }

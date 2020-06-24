@@ -1,0 +1,73 @@
+.bar {
+    justify-content: center;
+    background-color: rgb(12, 53, 71);
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+}
+
+.item {
+    color: white;
+    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    transition: background-color 0.3s ease-out;
+    display: inline-block;
+    min-width: 250px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.side:hover {
+    cursor: pointer;
+    color: lightseagreen;
+    background-color: rgb(12, 53, 71);
+}
+
+.disabled {
+    color: grey;
+}
+
+.disabled:hover {
+    color: grey;
+    cursor: default;
+}
+
+.run {
+    border: rgb(12, 53, 71) solid 1px;
+    border-radius: 10px;
+    background-color: #57a124;
+    
+}
+
+.run:hover {
+    cursor: pointer;
+    color: white;
+    background-color: #61B329;
+}
+
+.pause {
+    background-color: #cd2626;
+}
+
+.pause:hover {
+    background-color: #d23b3b;
+}
+
+.disabledRun {
+    border: rgb(12, 53, 71) solid 1px;
+    border-radius: 10px;
+    color: white;
+    background-color: grey;
+}
+
+.complete {
+    background-color: orange;
+}

@@ -137,7 +137,7 @@ class Node extends React.Component {
         const { 
             row, col, 
             isStart, isFinish, isWall, isHead, isVisited, isFrontier, isPath, isBacktrack, fCost, 
-            selectedAlgorithm, 
+            selectedAlgorithm
          } = this.props;
 
 
