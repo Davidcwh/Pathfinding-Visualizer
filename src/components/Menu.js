@@ -72,6 +72,7 @@ class Menu extends React.Component {
         }
 
         runAlgorithm();
+        window.scrollTo(0,50);
 
         switch(selectedAlgorithm) {
             case "BFS":
