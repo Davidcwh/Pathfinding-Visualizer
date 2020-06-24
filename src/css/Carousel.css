@@ -28,6 +28,12 @@
   user-select: none;
 }
 
+.description {
+  height: 100px;
+  margin-top: 10px;
+  white-space:pre-wrap;
+}
+
 /* Position the "next button" to the right */
 .next {
   right: 0;

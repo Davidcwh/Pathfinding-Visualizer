@@ -67,7 +67,7 @@ class Carousel extends React.Component {
                     <div className="mySlides fade">
                         <h1 className="ui header">{header}</h1>
                         <img src={src} alt={`${header} gif`} height="300" width="300"/>
-                        <div>{description}</div>
+                        <div className="description">{description}</div>
                     </div>
 
                     <a className="prev" onClick={() => this.plusSlides(-1)}>&#10094;</a>
