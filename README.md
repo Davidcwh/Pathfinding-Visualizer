@@ -119,7 +119,7 @@ Currently it costs 1 step to travel from a node to any of its neighbours. Adding
 
 ### Recursive Maze Generation
 Implement recursive maze generation algorithms to generate mazes:
-![recursive maze generation](src/media/Recursive_maze.gif)
+![recursive maze generation](src/media/recursive_maze.gif)
 
 ### Toggle Wall Probability in Random Wall Generation
 Currently in the random wall generation feature, the probability of a node being toggled as a wall is 0.3 as I found it to produce the right balance of walls and explorable search space. Further expansion would be to allow users to adjust this probability for greater flexiblity when experimenting with different obstacle density.
