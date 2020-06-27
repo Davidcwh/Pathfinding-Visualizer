@@ -119,6 +119,7 @@ Currently it costs 1 step to travel from a node to any of its neighbours. Adding
 
 ### Recursive Maze Generation
 Implement recursive maze generation algorithms to generate mazes:
+
 ![recursive maze generation](src/media/recursive_maze.gif)
 
 ### Toggle Wall Probability in Random Wall Generation
