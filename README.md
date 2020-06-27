@@ -1,13 +1,19 @@
 ![header](src/media/readme/readmeheader.png)
 
 # Pathfinding Visualizer: About the Project
-**An interactive web application that helps users visualize search algorithms in a grid environment.**
+An interactive web application that helps users visualize search algorithms in a grid environment.
 
 [Click here to try out the current deployed version](https://davidcwh.github.io/Pathfinding-Visualizer/)
 
+## Built With
+* [Create React App](https://create-react-app.dev/)
+* [React JS](https://reactjs.org/)
+* [React Redux](https://react-redux.js.org/)
+* [Semantic UI React](https://react.semantic-ui.com/)
+
 ## Motivation: Why Web Application and Why Visualize Algorithms?
 
-Being new to frontend web development, this project is an outlet for me to apply the web development knowledge I have learned at the start of my internship, and more importantly to gain experience in using the React JS and Redux libaries.
+Being new to frontend web development, this project is an outlet for me to apply the web development knowledge I have learned during my current internship, and more importantly to gain experience in using the React JS and Redux libaries.
 
 Furthermore, I have a personal interest in learning and understanding how different algorithms work. Having learned about basic uninformed search algorithms in year 1 and more recently informed search algorithms in year 2 of my Computer Science course at NUS, building a pathfinding visualizer helps to reinforce my understanding of them. 
 
@@ -32,21 +38,21 @@ The layout of the web application had three main components:
 ### Wall Creation
 To toggle a wall node, click on an unvisited node. Holding down the mouse allows the user to toggle mulitple walls at once:
 
-![toggle wall node](src/media/readme/)
+![toggle wall node](src/media/readme/toggle_wall.gif)
 
 ### Shift Start and End nodes 
-Users are able to shift the Start and End nodes before an algorithm run:
+Holding down and draging the Start/End nodes, Users are able to shift them before an algorithm run:
 
-![Shift Start/End before run](src/media/readme/)
+![Shift Start/End before run](src/media/readme/move_start_end_before.gif)
 
 After an algorithm run, moving the Start or End node would recompute and render the resultant grid instantly. This allows users to see the difference in path taken/search space if the Start/End nodes were shifted:
 
-![Shift Start/End after run](src/media/readme/)
+![Shift Start/End after run](src/media/readme/move_start_end_after.gif)
 
-### Algorithms Available
+### Algorithms
 Currently there are four search algorithms available, two uninformed and two informed.
 
-![Algorithm Selection](src/media/readme/)
+![Algorithm Selection](src/media/readme/select_algorithm.gif)
 
 #### Breath First Search (BFS)
 An uninformed search algorithm, BFS expands the shallowest unexpanded nodes first using a FIFO queue for the frontier. Any new path to a node that is already in the frontier or is visited is discarded, as a result, BFS always has the shallowest path to every frontier node and consequently guarantees the optimal path.
@@ -61,7 +67,7 @@ DFS does not guarantee the optimal path.
 #### A* Search
 An informed search algorithm, A* (pronounced A Star) search evaluates nodes by taking the sum of _g(n)_, the cost of reaching node n, and _h(n)_, the estimated cost of the shortest path from n to the End node: _f(n)_ = _g(n)_ + _h(n)_.
 
-Thus, _f(n)_ is the estimated cost of the cheapest path through node n. A* Search expands the nodes in the frontier with the lowest _f(n)_ value. For _h(n)_, the Manhattan Distance heuristic is used.
+Thus, _f(n)_ is the estimated cost of the cheapest path through node n. A* Search expands the nodes in the frontier with the lowest _f(n)_ value. For _h(n)_, the [Manhattan Distance heuristic](http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#:~:text=Manhattan%20distance%23&text=For%20the%20best%20paths%2C%20and,and%20decrease%20h%20by%20D.) is used.
 
 Since the Manhattan Distance heuristic is consistent, the A* Search guarantees the optimal path.
 
@@ -74,12 +80,12 @@ However, it does not guarantee the optimal path. This is because it does not tak
 ### Pause/Resume Algorithm Run
 Users can pause and resume an algorithm midway through its run:
 
-![pause resume](src/media/readme/toggle_wall.gif)
+![pause resume](src/media/readme/pause_resume.gif)
 
 ### Real Time Statistics
 Number of each type of node is displayed and updated in real time as an algorithm is ran:
 
-![statistics](src/media/readme/)
+![statistics](src/media/readme/statistics.gif)
 
 The purpose of the statistics board is not purely for aesthetics; the number of certain type of nodes carry some significance in analysing each algorithm's performance:
 | Node Type     | Significance    |
@@ -91,7 +97,7 @@ The purpose of the statistics board is not purely for aesthetics; the number of 
 ### Random Wall Generation
 If manually drawing wall nodes is too time/effort consuming, users can generate a grid with randomly placed wall nodes:
 
-![Random Wall Generation](src/media/readme/)
+![Random Wall Generation](src/media/readme/random_wall_generation.gif)
 
 ### Grid Clearance
 Users are able to clear the entire grid, or just clear all nodes excepts for walls - useful when running multiple algorithms on the same grid wall configuration:
@@ -113,16 +119,10 @@ Currently it costs 1 step to travel from a node to any of its neighbours. Adding
 
 ### Recursive Maze Generation
 Implement recursive maze generation algorithms to generate mazes:
-![recursive maze generation](src/media/)
+![recursive maze generation](src/media/Recursive_maze.gif)
 
 ### Toggle Wall Probability in Random Wall Generation
 Currently in the random wall generation feature, the probability of a node being toggled as a wall is 0.3 as I found it to produce the right balance of walls and explorable search space. Further expansion would be to allow users to adjust this probability for greater flexiblity when experimenting with different obstacle density.
 
 ### Toggle Algorithm Run Speed
 Ability to make algorithm runs slower allows users to better follow its progress through the grid.
-
-## Built With
-* [Create React App](https://create-react-app.dev/)
-* [React JS](https://reactjs.org/)
-* [React Redux](https://react-redux.js.org/)
-* [Semantic UI React](https://react.semantic-ui.com/)
